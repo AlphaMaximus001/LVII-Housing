@@ -10,7 +10,7 @@ A waitlist and validation site. Flow: intro animation → story "video" (animate
 - A single `index.html`: vanilla HTML/CSS/JS, no framework, no build step.
 - Google Fonts: Tinos (all serif), Onest (sans).
 - The pine photo lives in `assets/pine.jpg` (preloaded; the intro waits up to 2.5s for it to decode). The logo SVG path is inline.
-- `apps-script.gs` is a Google Apps Script web app that appends each submission to a Google Sheet. Its URL goes in `CONFIG.endpoint` in `index.html`, which is currently empty, so nothing is saved yet. The form POSTs with `no-cors`, so the page can't read the response.
+- `apps-script.gs` is a Google Apps Script web app that appends each submission to a Google Sheet. Its deployed URL is set in `CONFIG.endpoint` in `index.html`; redeploy changes as a new version of the same deployment so the URL stays put. The form POSTs with `no-cors`, so the page can't read the response.
 - Spam: a hidden honeypot field (`#company`). If it's filled, the page shows success but sends nothing, and the Apps Script also drops the row.
 - Hosting: Vercel, static, no build. `vercel.json` sets clean URLs and caches `/assets/*` for 30 days, so rename an asset when you replace it.
 
@@ -38,7 +38,6 @@ Questions: profile, current living, painful chores (multi-select), room type, me
 Side margins, the video visible on the first screen, a landscape fit, 44px tap targets, a short "Join" header label at ≤400px, and a counter that always shows. Checked at 320, 375, 390, 430, 844×390, 768, 1024 and 1440 with no sideways scrolling or scene overflow.
 
 ## Open items
-- Deploy the Apps Script and set `CONFIG.endpoint`.
 - Connect the repo to Vercel (preset: Other, no build command, root output).
 - Venture name is still TBD. "Co-living" is a placeholder.
 - Get a proper vector logo.
