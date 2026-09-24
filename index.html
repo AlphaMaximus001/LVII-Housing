@@ -258,13 +258,15 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 #introSvg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;visibility:hidden}
 #introWord{position:absolute;left:50%;font:500 clamp(30px,4vw,44px)/1 var(--sans);letter-spacing:.32em;padding-left:.32em;color:var(--green);opacity:0;transform:translate(-50%,8px);transition:opacity .35s,transform .45s cubic-bezier(.2,.8,.2,1)}
 #introWord.on{opacity:1;transform:translate(-50%,0)}
-#introSkip{min-height:36px;position:absolute;right:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));background:rgba(3,46,36,.82);color:#fff;border:0;border-radius:999px;padding:9px 16px;font:500 13px var(--sans);cursor:pointer;backdrop-filter:blur(6px);transition:opacity .4s}
 body.intro-lock{overflow:hidden}
 body.pre .bar,body.pre main,body.pre footer{opacity:0}
 body.opening .bar,body.opening main,body.opening footer{transition:opacity .45s ease,transform .55s cubic-bezier(.2,.8,.2,1)}
 body.pre main{transform:translateY(24px)}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 </style>
+<!-- Vercel Web Analytics (enable it in the Vercel project first; 404s locally, which is harmless) -->
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body class="pre intro-lock">
 <div id="intro">
@@ -278,7 +280,6 @@ body.pre main{transform:translateY(24px)}
   <div id="introFill"></div>
   <svg id="introSvg" aria-hidden="true"><g id="introMark"><use href="#mark" width="138" height="158.5" style="color:#065442"/></g></svg>
   <div id="introWord">LVII</div>
-  <button id="introSkip" type="button">Skip intro</button>
 </div>
 
 
@@ -527,7 +528,7 @@ body.pre main{transform:translateY(24px)}
   const body = document.body, intro = document.getElementById('intro');
   const img = document.getElementById('pine'), fill = document.getElementById('introFill');
   const svg = document.getElementById('introSvg'), mark = document.getElementById('introMark');
-  const word = document.getElementById('introWord'), skipBtn = document.getElementById('introSkip');
+  const word = document.getElementById('introWord');
   const LOGO = { w: 138, h: 158.5, cx: 69, cy: 79.25, px: 69, py: 148 }; // py = thick point in the lower stroke
   let done = false;
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -554,7 +555,6 @@ body.pre main{transform:translateY(24px)}
     intro.style.transition = 'opacity .5s'; intro.style.opacity = 0;
     setTimeout(() => intro.remove(), 550);
   }
-  skipBtn.onclick = finish;
 
   async function run(){
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) { await sleep(900); return finish(); }
@@ -564,7 +564,6 @@ body.pre main{transform:translateY(24px)}
     // 1. Pine, LVII resolves
     try { await Promise.race([document.fonts.ready, sleep(1500)]); } catch(e) {}
     img.classList.add('kb');
-    skipBtn.style.opacity = .9;
     await sleep(150); document.getElementById('bigWord').classList.add('on');
     await sleep(1400); if (done) return;
 
@@ -596,7 +595,7 @@ body.pre main{transform:translateY(24px)}
 
     // wordmark
     word.style.top = (ccy + LOGO.h*s1/2 + gap) + 'px';
-    word.classList.add('on'); skipBtn.style.opacity = 0;
+    word.classList.add('on');
     await sleep(650); if (done) return;
 
     // 4. Mark flies to the header, page opens underneath, then hands off exactly

@@ -12,6 +12,7 @@ A waitlist and validation site. Flow: intro animation → story "video" (animate
 - The pine photo lives in `assets/pine.jpg` (preloaded; the intro waits up to 2.5s for it to decode). The logo SVG path is inline.
 - `apps-script.gs` is a Google Apps Script web app that appends each submission to a Google Sheet. Its deployed URL is set in `CONFIG.endpoint` in `index.html`; redeploy changes as a new version of the same deployment so the URL stays put. The form POSTs with `no-cors`, so the page can't read the response.
 - Spam: a hidden honeypot field (`#company`). If it's filled, the page shows success but sends nothing, and the Apps Script also drops the row.
+- Analytics: Vercel Web Analytics via `/_vercel/insights/script.js` in `<head>` (must be enabled in the Vercel project; 404s locally).
 - Hosting: Vercel, static, no build. `vercel.json` sets clean URLs and caches `/assets/*` for 30 days, so rename an asset when you replace it.
 
 ## Brand
@@ -19,7 +20,7 @@ A waitlist and validation site. Flow: intro animation → story "video" (animate
 - Logo mark: a traced SVG (`<symbol id="mark">`, viewBox `0 0 138 158.5`), slightly faceted because it came from a low-res screenshot. Replace it with a vector from the original Canva PNGs.
 - Header lockup: mark + "LVII" + "Co-living / REDEFINED". The footer matches.
 
-## Intro sequence (about 6.5s, skippable, respects reduced motion)
+## Intro sequence (about 6.5s, no skip button, respects reduced motion)
 1. Pine image, no fog or rain, with a crisp white "LVII" (Tinos 700) centred.
 2. White bars drop in from the top and bottom, with scrolling "LVII" strips (top moves left→right, bottom right→left).
 3. The bars retract and the screen washes to solid green.
