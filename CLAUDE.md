@@ -9,8 +9,10 @@ A waitlist and validation site. Flow: intro animation → story "video" (animate
 ## Tech
 - A single `index.html`: vanilla HTML/CSS/JS, no framework, no build step.
 - Google Fonts: Tinos (all serif), Onest (sans).
-- The pine photo and the logo SVG path are embedded as base64 / inline SVG. The pine should move out into its own file for caching.
+- The pine photo lives in `assets/pine.jpg` (preloaded; the intro waits up to 2.5s for it to decode). The logo SVG path is inline.
 - `apps-script.gs` is a Google Apps Script web app that appends each submission to a Google Sheet. Its URL goes in `CONFIG.endpoint` in `index.html`, which is currently empty, so nothing is saved yet. The form POSTs with `no-cors`, so the page can't read the response.
+- Spam: a hidden honeypot field (`#company`). If it's filled, the page shows success but sends nothing, and the Apps Script also drops the row.
+- Hosting: Vercel, static, no build. `vercel.json` sets clean URLs and caches `/assets/*` for 30 days, so rename an asset when you replace it.
 
 ## Brand
 - Colors: green `#065442` (primary), deep `#032E24`, black `#000`, white `#FFF`, mist `#EEF3F0`, lamp accent `#F2B544`.
@@ -37,9 +39,7 @@ Side margins, the video visible on the first screen, a landscape fit, 44px tap t
 
 ## Open items
 - Deploy the Apps Script and set `CONFIG.endpoint`.
-- Host the site (GitHub Pages, Netlify or Vercel).
+- Connect the repo to Vercel (preset: Other, no build command, root output).
 - Venture name is still TBD. "Co-living" is a placeholder.
 - Get a proper vector logo.
-- Split the pine image out of the HTML.
 - Confirm or adjust the budget bands.
-- Optional: add a honeypot spam trap to the form.
