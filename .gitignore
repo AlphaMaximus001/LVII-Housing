@@ -1,1 +1,6 @@
 .DS_Store
+brag-output/work/frames/
+brag-output/work/stills/
+brag-output/work/*.log
+brag-output/work/work_frame0_orig.jpg
+brag-output/work/audio.wav

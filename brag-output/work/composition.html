@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LVII brag</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+:root{
+  --green:#065442; --deep:#032E24; --ink:#000; --paper:#fff; --mist:#EEF3F0; --line:#CFDDD6; --lamp:#F2B544; --muted:#4A615A;
+  --serif:Tinos,"Times New Roman",Georgia,serif;
+  --sans:"Onest",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#000}
+body{font:400 28px/1.5 var(--sans);-webkit-font-smoothing:antialiased;color:#fff}
+.scene{position:absolute;inset:0;overflow:hidden;visibility:hidden}
+.cap{font:400 84px/1.1 var(--serif);margin:0;letter-spacing:-.005em}
+.sub{font-size:32px;opacity:.8;margin:26px 0 0;max-width:30ch;line-height:1.4}
+.split{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;gap:110px;align-items:center;padding:0 170px}
+
+/* S1 */
+#s1{background:var(--deep)}
+.clock{font:400 290px/1 var(--serif);letter-spacing:-.02em;display:flex;align-items:baseline;gap:.08em}
+.clock small{font:500 .2em var(--sans);letter-spacing:.05em;opacity:.7}
+.clockSub{font-size:32px;opacity:.75;margin-top:18px}
+.notes{display:grid;gap:18px;width:680px;justify-self:end}
+.note{background:rgba(255,255,255,.97);color:var(--ink);border-radius:26px;padding:20px 24px;display:grid;grid-template-columns:60px 1fr;gap:18px;align-items:center;box-shadow:0 18px 50px rgba(0,0,0,.3)}
+.note .ic{width:60px;height:60px;border-radius:16px;display:grid;place-items:center;font:600 24px var(--sans);color:#fff;background:var(--green)}
+.note b{display:block;font-size:22px;line-height:1.2}
+.note span{font-size:27px;line-height:1.3;color:#222}
+.note .when{font-size:18px;color:#7c8c86;font-weight:500;margin-left:8px}
+
+/* S2 */
+#s2{background:var(--deep)}
+.list{list-style:none;margin:0;padding:0;display:grid;gap:16px;width:680px;justify-self:end}
+.list li{display:flex;align-items:center;gap:20px;padding:20px 26px;border-radius:18px;background:#fff;color:var(--ink);font-weight:500;font-size:29px;line-height:1.2}
+.box{width:36px;height:36px;border-radius:9px;border:3px solid #9AA9A3;flex:none;display:grid;place-items:center}
+#s2 li:nth-child(n+4){background:#fff4f0}
+.tag{margin-left:auto;font-size:20px;font-weight:600;color:var(--green);background:var(--mist);padding:6px 16px;border-radius:999px}
+
+/* S3 */
+#s3{background:#021a14}
+#pine{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.92)}
+#bigWord{position:absolute;left:50%;top:50%;font:700 210px/1 var(--serif);letter-spacing:.01em;color:#fff;text-shadow:0 2px 24px rgba(0,0,0,.2);white-space:nowrap}
+.band{position:absolute;left:0;right:0;height:250px;background:#fff;display:flex;align-items:center;overflow:hidden}
+.band.top{top:0}.band.bottom{bottom:0}
+.track{display:flex;width:max-content}
+.track span{font:700 100px/1 var(--serif);color:var(--green);padding:0 90px;letter-spacing:.01em}
+#fill{position:absolute;inset:0;background:var(--green)}
+.lockup{position:absolute;left:50%;top:50%;display:flex;align-items:center;gap:40px;color:#fff}
+.lockup svg{width:150px;height:auto;display:block}
+.lockup b{font:500 150px/1 var(--sans);letter-spacing:.02em}
+.lockup .tl{display:flex;flex-direction:column;padding-left:36px;border-left:3px solid rgba(255,255,255,.35);font-size:52px;line-height:1.1}
+.lockup .tl small{font-size:30px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--lamp);margin-top:8px}
+
+/* S4 / S5 */
+#s4,#s5{background:var(--mist);color:var(--ink)}
+#s4 .box{border-color:var(--green)}
+#s4 .cap,#s5 .cap{color:var(--ink)}
+.bill{background:#fff;color:var(--ink);border-radius:26px;padding:40px 44px 34px;width:640px;justify-self:end;box-shadow:0 30px 80px rgba(3,46,36,.18)}
+.bill h4{margin:0 0 22px;font:400 38px var(--serif);color:var(--green)}
+.row{display:flex;justify-content:space-between;gap:12px;padding:16px 0;border-top:2px dashed var(--line);font-size:28px}
+.row em{font-style:normal;color:var(--muted)}
+.row.inc em{color:var(--green);font-weight:600}
+.row.total{border-top:3px solid var(--ink);font-weight:600;margin-top:8px;font-size:30px}
+#zero{display:inline-block;min-width:1ch;text-align:right;color:var(--green);font-size:44px;line-height:30px}
+
+/* S6 survey */
+#s6{background:#fff;color:var(--ink)}
+#s6 h2{font:400 88px/1.05 var(--serif);color:var(--green);margin:0}
+#s6 .lede{color:var(--muted);font-size:34px;margin:26px 0 0}
+.qwrap{position:relative;height:330px;justify-self:stretch}
+.q{position:absolute;inset:0}
+.qmeta{display:flex;align-items:center;gap:18px;font-size:22px;font-weight:600;color:var(--green);letter-spacing:.06em;text-transform:uppercase;margin-bottom:22px}
+.segs{display:flex;gap:6px;flex:1}
+.segs i{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.segs i.on{background:var(--green)}
+.q h3{font:400 50px/1.15 var(--serif);margin:0 0 30px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.opt{display:flex;align-items:center;gap:16px;min-height:92px;padding:20px 26px;border:2.5px solid var(--line);border-radius:22px;font-weight:500;font-size:29px;background:#fff}
+.opt .dot{width:28px;height:28px;border-radius:50%;border:2.5px solid #9AA9A3;flex:none;display:grid;place-items:center}
+.opt .dot::after{content:"";width:14px;height:14px;border-radius:50%;background:var(--green);transform:scale(var(--dot,0))}
+.opt.on{border-color:var(--green);background:var(--mist);color:var(--green)}
+.opt.on .dot{border-color:var(--green)}
+#cursor{position:absolute;left:0;top:0;width:54px;height:54px;z-index:20;transform-origin:8px 6px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.25))}
+#ripple{position:absolute;width:90px;height:90px;border-radius:50%;border:4px solid var(--lamp);z-index:19;opacity:0}
+
+/* S7 */
+#s7{background:radial-gradient(55% 65% at 50% 42%,rgba(242,181,68,.20),transparent 70%),var(--green);display:grid;place-items:center;text-align:center}
+#s7 .endMark{width:120px;height:auto;display:block;margin:0 auto 40px}
+#s7 .cap{font-size:100px}
+#s7 .sub{margin:26px auto 0;max-width:none;font-size:36px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:30px 60px;font:600 36px/1 var(--sans);background:var(--lamp);color:var(--ink);margin-top:56px}
+.foot{position:absolute;left:0;right:0;bottom:56px;text-align:center;font-size:24px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,.65)}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="mark" viewBox="0 0 138 158.5"><path fill="currentColor" fill-rule="evenodd" d="M21.2 46.2 L8.3 59.0 L3.3 65.8 L0.0 72.8 L0.0 84.8 L3.2 91.3 L6.2 95.6 L69.0 158.4 L69.8 158.4 L113.3 114.9 L113.5 113.6 L104.5 104.5 L103.3 104.4 L70.3 137.3 L68.6 137.4 L18.7 87.6 L15.5 83.4 L14.2 79.7 L15.3 74.4 L17.5 70.6 L25.0 62.7 L22.6 53.2 L22.5 46.6 Z M66.9 0.0 L46.9 20.7 L42.3 27.1 L38.3 35.3 L36.6 42.1 L36.4 49.4 L38.0 57.0 L41.5 64.8 L46.1 71.2 L76.9 101.8 L78.9 101.5 L87.3 93.0 L86.7 91.0 L57.3 61.8 L54.2 57.5 L51.8 52.2 L50.9 44.8 L52.2 39.7 L54.0 35.9 L59.1 29.0 L67.0 21.0 L68.5 20.8 L121.7 73.8 L123.1 77.2 L122.3 82.1 L120.1 86.3 L115.1 92.5 L115.0 93.9 L123.8 102.8 L125.3 102.8 L130.4 97.0 L133.2 92.8 L137.9 82.2 L137.9 74.2 L134.6 66.8 L131.9 63.1 L69.1 0.0 Z"/></symbol>
+  <symbol id="tick" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<!-- 1: hook -->
+<div class="scene" id="s1">
+  <div class="split">
+    <div>
+      <div class="clock" id="clock">9<span id="colon">:</span>47<small>pm</small></div>
+      <div class="clockSub" id="clockSub">Home at last. Or so you thought.</div>
+    </div>
+    <div class="notes">
+      <div class="note"><div class="ic">D</div><div><b>Didi<span class="when">now</span></b><span>Aaj nahi aa paungi. Kal pakka 🙏</span></div></div>
+      <div class="note"><div class="ic">F</div><div><b>Flat 4B<span class="when">now</span></b><span>whose turn for the gas cylinder??</span></div></div>
+      <div class="note"><div class="ic">L</div><div><b>Landlord<span class="when">now</span></b><span>Bill aaya hai. Split kar lena.</span></div></div>
+      <div class="note"><div class="ic">M</div><div><b>Mummy<span class="when">now</span></b><span>Khana khaya?</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 2: second shift -->
+<div class="scene" id="s2">
+  <div class="split">
+    <div>
+      <p class="cap">Your evening? Already booked.</p>
+      <p class="sub">And lowkey, none of it is for you.</p>
+    </div>
+    <ul class="list">
+      <li><span class="box"></span>Figure out dinner (again)</li>
+      <li><span class="box"></span>Wash clothes for tomorrow</li>
+      <li><span class="box"></span>Clean the room</li>
+      <li><span class="box"></span>Find a new didi</li>
+      <li><span class="box"></span>Grocery run</li>
+      <li><span class="box"></span>Chase everyone for their share</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 3: reveal -->
+<div class="scene" id="s3">
+  <img id="pine" src="pine.jpg" alt="">
+  <div id="bigWord">LVII</div>
+  <div class="band top"><div class="track"></div></div>
+  <div class="band bottom"><div class="track"></div></div>
+  <div id="fill"></div>
+  <div class="lockup" id="lockup">
+    <svg viewBox="0 0 138 158.5"><use href="#mark" width="138" height="158.5"/></svg>
+    <b>LVII</b>
+    <span class="tl">Co-living<small>Redefined</small></span>
+  </div>
+</div>
+
+<!-- 4: sorted -->
+<div class="scene" id="s4">
+  <div class="split">
+    <div>
+      <p class="cap">Then we take the whole list off your plate.</p>
+      <p class="sub">No supervising. No follow-ups. No ick.</p>
+    </div>
+    <ul class="list">
+      <li><span class="box"><svg width="24" height="24"><use href="#tick"/></svg></span>Meals, cooked fresh<span class="tag">Sorted</span></li>
+      <li><span class="box"><svg width="24" height="24"><use href="#tick"/></svg></span>Rooms cleaned daily<span class="tag">Sorted</span></li>
+      <li><span class="box"><svg width="24" height="24"><use href="#tick"/></svg></span>Laundry washed + folded<span class="tag">Sorted</span></li>
+      <li><span class="box"><svg width="24" height="24"><use href="#tick"/></svg></span>Staff? We manage them<span class="tag">Sorted</span></li>
+      <li><span class="box"><svg width="24" height="24"><use href="#tick"/></svg></span>Repairs, sorted<span class="tag">Sorted</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 5: one bill -->
+<div class="scene" id="s5">
+  <div class="split">
+    <div>
+      <p class="cap">One bill. Zero chores.</p>
+      <p class="sub">That's it, that's the post.</p>
+    </div>
+    <div class="bill">
+      <h4>Your month</h4>
+      <div class="row"><span>Rent</span><em>Fixed</em></div>
+      <div class="row"><span>Electricity</span><em>Your share</em></div>
+      <div class="row inc"><span>Meals</span><em>Included</em></div>
+      <div class="row inc"><span>Cleaning</span><em>Included</em></div>
+      <div class="row inc"><span>Laundry</span><em>Included</em></div>
+      <div class="row total"><span>Chores left for you</span><span id="zero">6</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 6: survey -->
+<div class="scene" id="s6">
+  <div class="split" style="grid-template-columns:.8fr 1.2fr;gap:90px">
+    <div>
+      <h2>Help us<br>build it right</h2>
+      <p class="lede">Eight quick questions. Then you're on the list.</p>
+    </div>
+    <div class="qwrap">
+      <div class="q" id="qA">
+        <div class="qmeta">Question 4 of 8<span class="segs"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span></div>
+        <h3>What kind of room would you want?</h3>
+        <div class="opts">
+          <div class="opt" id="oA"><span class="dot"></span>Private room</div>
+          <div class="opt"><span class="dot"></span>Twin sharing</div>
+          <div class="opt"><span class="dot"></span>Either works</div>
+        </div>
+      </div>
+      <div class="q" id="qB">
+        <div class="qmeta">Question 8 of 8<span class="segs"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></div>
+        <h3>When could you move in?</h3>
+        <div class="opts">
+          <div class="opt" id="oB"><span class="dot"></span>Within a month</div>
+          <div class="opt"><span class="dot"></span>1 to 3 months</div>
+          <div class="opt"><span class="dot"></span>3 to 6 months</div>
+          <div class="opt"><span class="dot"></span>Just exploring</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="ripple"></div>
+  <svg id="cursor" viewBox="0 0 24 24"><path d="M4 2.5l15 9.2-6.6 1.4 3.9 7.3-2.9 1.5-3.9-7.3L4.8 19z" fill="#000" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+</div>
+
+<!-- 7: outro -->
+<div class="scene" id="s7">
+  <div>
+    <svg class="endMark" id="endMark" viewBox="0 0 138 158.5" style="color:#fff"><use href="#mark" width="138" height="158.5"/></svg>
+    <p class="cap" id="endCap">Coming soon. Starting in Lucknow.</p>
+    <p class="sub" id="endSub">Tell us what home should feel like and get first dibs.</p>
+    <div class="btn" id="endBtn">Join the waitlist</div>
+  </div>
+  <div class="foot" id="foot">LVII Co-living · Redefined · A Maaef Group venture</div>
+</div>
+
+<script>
+// Tracks
+document.querySelectorAll('.track').forEach(tr => { tr.innerHTML = '<span>LVII</span>'.repeat(24); });
+
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const clamp = (x,a=0,b=1) => Math.min(b, Math.max(a, x));
+const prog = (t,a,b) => clamp((t-a)/(b-a));
+const eio = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+const eout = t => 1-Math.pow(1-t,3);
+const back = t => { const c1=1.70158, c3=c1+1; return 1 + c3*Math.pow(t-1,3) + c1*Math.pow(t-1,2); };
+const lerp = (a,b,p) => a+(b-a)*p;
+
+const SCENES = [['s1',0,3.5],['s2',3.5,6],['s3',6,9],['s4',9,12],['s5',12,15],['s6',15,17.5],['s7',17.5,20.01]];
+const WIPE = .32;
+
+// in: element fades/rises in over [a, a+d]
+function rise(el, u, a, d=.35, dy=30){
+  const p = eout(prog(u,a,a+d));
+  el.style.opacity = p; el.style.transform = `translateY(${(1-p)*dy}px)`;
+}
+function pop(el, u, a, d=.4){
+  const p = prog(u,a,a+d), s = back(p);
+  el.style.opacity = eout(clamp(p*1.8));
+  el.style.transform = `translateY(${(1-s)*-26}px) scale(${lerp(.96,1,s)})`;
+}
+
+function render(t){
+  SCENES.forEach(([id,a,b], i) => {
+    const el = document.getElementById(id);
+    const on = t >= a && t < b + (i < SCENES.length-1 ? WIPE : 0);
+    el.style.visibility = on ? 'visible' : 'hidden';
+    el.style.zIndex = i;
+    // wipe in from the right (not the first scene)
+    if (i > 0) {
+      const p = eio(prog(t, a, a+WIPE));
+      el.style.clipPath = p >= 1 ? 'none' : `inset(0 0 0 ${(1-p)*100}%)`;
+    }
+    if (on) SC[id](t - a);
+  });
+}
+
+const SC = {
+  s1(u){
+    const c = $('#clock'), p = eout(prog(u,0,.35));
+    c.style.opacity = p; c.style.transform = `scale(${lerp(1.12,1,p)})`; c.style.transformOrigin = '0 70%';
+    $('#colon').style.opacity = (Math.floor(u*2)%2) ? .15 : 1;
+    rise($('#clockSub'), u, .25);
+    $$('#s1 .note').forEach((n,k) => pop(n, u, .55 + k*.48));
+  },
+  s2(u){
+    rise($('#s2 .cap'), u, .3); rise($('#s2 .sub'), u, .5);
+    const lis = $$('#s2 li');
+    lis.forEach((li,k) => {
+      const p = eout(prog(u, .25 + k*.17, .25 + k*.17 + .3));
+      li.style.opacity = p; li.style.transform = `translateX(${(1-p)*40}px)`;
+    });
+    // overload shake
+    const sp = prog(u, 1.55, 2.0), amp = Math.sin(sp*Math.PI) * 10;
+    $('#s2 .list').style.transform = `translateX(${Math.sin(u*70)*amp}px) rotate(${Math.sin(u*55)*amp*.08}deg)`;
+  },
+  s3(u){
+    const pine = $('#pine'); pine.style.transform = `scale(${1.1 - .06*prog(u,0,3)})`;
+    const w = $('#bigWord'), wp = eout(prog(u,.05,.45));
+    w.style.opacity = wp; w.style.transform = `translate(-50%,-50%) scale(${lerp(1.06,1,wp)})`;
+    const bin = eio(prog(u,.55,.9)), bout = eio(prog(u,1.4,1.7)), b = bin - bout;
+    $('.band.top').style.transform = `translateY(${(b-1)*101}%)`;
+    $('.band.bottom').style.transform = `translateY(${(1-b)*101}%)`;
+    const off = u * 90;
+    $('.band.top .track').style.transform = `translateX(${-1400 + off}px)`;
+    $('.band.bottom .track').style.transform = `translateX(${-200 - off}px)`;
+    $('#fill').style.opacity = eio(prog(u,1.45,1.75));
+    const l = $('#lockup'), lp = prog(u,1.7,2.1), ls = back(lp);
+    l.style.opacity = eout(clamp(lp*2));
+    l.style.transform = `translate(-50%,-50%) scale(${lerp(.86,1,ls)})`;
+  },
+  s4(u){
+    rise($('#s4 .cap'), u, .25); rise($('#s4 .sub'), u, .45);
+    $$('#s4 li').forEach((li,k) => {
+      const p = eout(prog(u, .2 + k*.1, .5 + k*.1));
+      li.style.opacity = p; li.style.transform = `translateX(${(1-p)*40}px)`;
+      const tk = .8 + k*.34, q = prog(u, tk, tk+.22);
+      const box = li.querySelector('.box'), tg = li.querySelector('.tag'), sv = box.querySelector('svg');
+      box.style.background = q > 0 ? `rgba(6,84,66,${q})` : 'transparent';
+      sv.style.opacity = q; sv.style.transform = `scale(${lerp(.4,1,back(q))})`;
+      tg.style.opacity = q; tg.style.transform = `translateX(${(1-eout(q))*-12}px)`;
+    });
+  },
+  s5(u){
+    rise($('#s5 .cap'), u, .25); rise($('#s5 .sub'), u, .55);
+    const bill = $('#s5 .bill'), bp = prog(u,.2,.6);
+    bill.style.opacity = eout(clamp(bp*1.6)); bill.style.transform = `translateY(${(1-back(bp))*40}px)`;
+    const n = Math.round(lerp(6, 0, eio(prog(u, .95, 1.75))));
+    const z = $('#zero'); z.textContent = n;
+    const zp = prog(u, 1.75, 2.1);
+    z.style.transform = `scale(${1 + Math.sin(zp*Math.PI)*.5})`;
+    z.style.color = n === 0 ? 'var(--green)' : 'var(--ink)';
+  },
+  s6(u){
+    rise($('#s6 h2'), u, .2); rise($('#s6 .lede'), u, .4);
+    const A = $('#qA'), B = $('#qB');
+    const aIn = eout(prog(u,.25,.55)), aOut = eio(prog(u,1.15,1.4));
+    A.style.opacity = aIn * (1-aOut); A.style.transform = `translateX(${(1-aIn)*40 - aOut*60}px)`;
+    const bIn = eout(prog(u,1.3,1.6));
+    B.style.opacity = bIn; B.style.transform = `translateX(${(1-bIn)*60}px)`;
+    const oA = $('#oA'), oB = $('#oB');
+    const selA = u >= .92, selB = u >= 2.0;
+    oA.classList.toggle('on', selA); oA.style.setProperty('--dot', eout(prog(u,.92,1.05)));
+    oB.classList.toggle('on', selB); oB.style.setProperty('--dot', eout(prog(u,2.0,2.13)));
+    // cursor path
+    const ra = oA.getBoundingClientRect(), rb = oB.getBoundingClientRect();
+    // oB rect is measured with its transform; remove transform offset
+    const bdx = (1-bIn)*60;
+    const pA = [ra.left + 42, ra.top + ra.height*.6], pB = [rb.left - bdx + 42, rb.top + rb.height*.6];
+    const p0 = [1760, 1000];
+    let x, y;
+    if (u < .9) { const k = eio(prog(u,.35,.85)); x = lerp(p0[0],pA[0],k); y = lerp(p0[1],pA[1],k); }
+    else if (u < 1.98) { const k = eio(prog(u,1.45,1.95)); x = lerp(pA[0],pB[0],k); y = lerp(pA[1],pB[1],k); }
+    else { x = pB[0]; y = pB[1]; }
+    const press = Math.max(Math.sin(prog(u,.84,1.0)*Math.PI), Math.sin(prog(u,1.92,2.08)*Math.PI));
+    const c = $('#cursor'); c.style.opacity = eout(prog(u,.3,.45));
+    c.style.transform = `translate(${x-8}px,${y-6}px) scale(${1 - press*.15})`;
+    const r = $('#ripple');
+    const rp1 = prog(u,.92,1.3), rp2 = prog(u,2.0,2.38);
+    const rp = u < 1.9 ? rp1 : rp2, rc = u < 1.9 ? pA : pB;
+    r.style.opacity = rp > 0 && rp < 1 ? (1-rp)*.9 : 0;
+    r.style.transform = `translate(${rc[0]-45}px,${rc[1]-45}px) scale(${lerp(.3,1.3,eout(rp))})`;
+  },
+  s7(u){
+    const m = $('#endMark'), mp = prog(u,.05,.45);
+    m.style.opacity = eout(clamp(mp*2)); m.style.transform = `scale(${lerp(.6,1,back(mp))})`;
+    rise($('#endCap'), u, .3, .4, 34); rise($('#endSub'), u, .55);
+    const b = $('#endBtn'), bp = prog(u,.75,1.1);
+    const press = Math.sin(prog(u,1.55,1.75)*Math.PI);
+    b.style.opacity = eout(clamp(bp*1.6));
+    b.style.transform = `translateY(${(1-back(bp))*30}px) scale(${1 - press*.06})`;
+    b.style.boxShadow = `0 0 0 ${eout(prog(u,1.6,2.1))*26}px rgba(242,181,68,${.45*(1-prog(u,1.6,2.1))})`;
+    rise($('#foot'), u, .9, .4, 12);
+  }
+};
+window.render = render;
+window.ready = Promise.all([document.fonts.ready, ...[...document.images].map(i => i.decode())]);
+render(new URLSearchParams(location.search).has('t') ? +new URLSearchParams(location.search).get('t') : 0);
+</script>
+</body>
+</html>
