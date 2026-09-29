@@ -14,7 +14,7 @@ if (mode === 'stills') {
     await p.screenshot({ path: `stills/t${t}.jpg`, quality: 85, type: 'jpeg' });
   }
 } else {
-  const FPS = 30, N = 600;
+  const FPS = 30, N = 1200;
   for (let i = 0; i < N; i++) {
     await p.evaluate(t => render(t), i / FPS);
     await p.screenshot({ path: `frames/${String(i).padStart(4,'0')}.jpg`, quality: 95, type: 'jpeg' });

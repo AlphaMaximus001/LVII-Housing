@@ -9,17 +9,22 @@
 **Tone:** `default`, with the site's Gen Z/Hinglish voice. Punchy and warm, on brand (green #065442, deep #032E24, mist, lamp #F2B544; Tinos + Onest).
 **Share caption:** Your 9 pm, minus the second shift. LVII Co-living is coming to Lucknow.
 
-## Storyboard (landscape 1920×1080, 30fps, 20.0s)
+## Storyboard v2 (landscape 1920×1080, 30fps, 40s, 120 BPM: 1 beat = 0.5s)
 
-| # | Time | Scene | On screen | Motion / SFX |
-|---|---|---|---|---|
-| 1 | 0.0–3.4 | Hook | Big "9:47 pm" on deep green; the real notifications drop in: Didi, Flat 4B, Landlord, Mummy "Khana khaya?" | Clock slams in; each note pops with a soft blip |
-| 2 | 3.4–6.0 | The second shift | "Your evening? Already booked." Chore list (6 items) stacks in fast, card shakes | Ticks; low thud at the end |
-| 3 | 6.0–8.6 | Reveal | Pine photo, white "LVII"; white bands with scrolling LVII drop in; wash to green, mark + "Co-living, Redefined" | Whoosh + bass hit on the reveal |
-| 4 | 8.6–11.8 | Highlight 1 | Mist bg: "Then we take the whole list off your plate." 5 items tick "Sorted" | A tick per item, pitched up the scale |
-| 5 | 11.8–14.8 | Highlight 2 | "One bill. Zero chores." The bill card; "Chores left for you" counts 6→0 | Counter ticks, soft chime on 0 |
-| 6 | 14.8–17.4 | Highlight 3 | "Help us build it right": survey card; a cursor picks "Private room", then a budget band; the step rail advances | Clicks |
-| 7 | 17.4–20.0 | Outro | Green: mark, "Coming soon. Starting in Lucknow.", lamp button "Join the waitlist" | Final chord, held |
+Everything lands on the beat grid shared by `work/timeline.js` and `work/audio.py`.
+
+| # | Time | Scene | Beat wiring |
+|---|---|---|---|
+| 1 | 0–6 | 9:47 pm + 4 notifications | Clock slams on beat 1; notes pop on beats at 1, 2, 3, 4s with ring bursts; the colon blinks on the beat |
+| 2 | 6–12 | "Your evening? Already booked." + 6 chores | One chore per beat (6.5–9s); overload stutter at 10s |
+| 3 | 12–16 | Breakdown on black: "You pay rent… / Then work a second shift…" | Kick drops out; snare roll and riser build; text tightens, then blacks out 0.25s before the drop |
+| 4 | 16–20 | **DROP**: pine + LVII, bands, green, lockup | White flash + radial burst at 16; bands on 17, green on 18, lockup pops on 18.5 |
+| 5 | 20–26 | "Then we take the whole list off your plate." | Items in on beats; "Sorted" ticks on beats 23–25, rising notes |
+| 6 | 26–30 | One bill, counter 6→0 | Counter steps on 16ths; chime and pop on 0 at 29s |
+| 7 | 30–34 | Survey: cursor answers 2 questions | Clicks on 31.5 and 33; mini build into the next drop |
+| 8 | 34–40 | **DROP 2**: "Coming soon. Starting in Lucknow." + Join the waitlist | Flash + lamp burst; mark and button pump with the kick; press at 37; final chord at 38 |
+
+Global: every scene scales slightly on each kick, and a lamp-glow pulse flashes on each kick (stronger in the drops).
 
 ## Sound
-An original, synthesized warm lo-fi house loop at 110 BPM in A minor → C (Am–F–C–G), with a kick, soft hats and a Rhodes-ish pad. SFX are pitched to the key and mixed under the music. Cuts land on the beat (1 beat = 0.545s).
+An original, synthesized upbeat house track at 120 BPM in C major (C–G–Am–F). It has four-on-the-floor kicks, claps, off-beat hats, sidechain-pumped pads, bouncing octave bass and off-beat chord stabs, with a lead hook in the drops. SFX (pops, blips, clicks, whooshes, impacts) are in key and placed on the same beats.
