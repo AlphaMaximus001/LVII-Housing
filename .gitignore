@@ -4,3 +4,11 @@ brag-output/work/stills/
 brag-output/work/*.log
 brag-output/work/work_frame0_orig.jpg
 brag-output/work/audio.wav
+brag-output-maaef/work/clips/
+brag-output-maaef/work/frames/
+brag-output-maaef/work/stills/
+brag-output-maaef/work/shots/
+brag-output-maaef/work/vf/
+brag-output-maaef/work/*.log
+brag-output-maaef/work/*.jpg
+brag-output-maaef/work/audio.wav
