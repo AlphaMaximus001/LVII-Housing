@@ -16,7 +16,7 @@ A waitlist and validation site. Flow: intro animation → story "video" (animate
 - Hosting: Vercel, static, no build. `vercel.json` sets clean URLs and caches `/assets/*` for 30 days, so rename an asset when you replace it.
 
 ## Brand
-- Colors: green `#065442` (primary), deep `#032E24`, black `#000`, white `#FFF`, mist `#EEF3F0`, lamp accent `#F2B544`.
+- Colors: green `#065442` (primary), deep `#032E24`, black `#000`, white `#FFF`, mist `#EEF3F0`, rose gold accent `#C98B6F` (`--rose-gold`; copper-leaning, 5.2:1 on deep green). The brand kit has no yellow.
 - Logo mark: a traced SVG (`<symbol id="mark">`, viewBox `0 0 138 158.5`), slightly faceted because it came from a low-res screenshot. Replace it with a vector from the original Canva PNGs.
 - Header lockup: mark + "LVII" + "Co-living / REDEFINED". Both lines use Onest 400; `fitTagline()` sets REDEFINED's letter-spacing (and shrinks it if needed) so it is exactly as wide as the line above. The footer is "LVII Co-living / REDEFINED" with the same treatment and no other text.
 
