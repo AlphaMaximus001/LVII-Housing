@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>
 :root{
-  --green:#065442; --deep:#032E24; --ink:#000; --paper:#fff; --mist:#EEF3F0; --line:#CFDDD6; --lamp:#F2B544; --muted:#4A615A;
+  --green:#065442; --deep:#032E24; --ink:#000; --paper:#fff; --mist:#EEF3F0; --line:#CFDDD6; --lamp:#C98B6F; --muted:#4A615A;
   --serif:Tinos,"Times New Roman",Georgia,serif;
   --sans:"Onest",system-ui,sans-serif;
 }
@@ -42,9 +42,9 @@ body{font:400 28px/1.5 var(--sans);-webkit-font-smoothing:antialiased;color:#fff
 #s2b{background:#000;display:grid;place-items:center;text-align:center}
 #s2b p{font:400 88px/1.2 var(--serif);margin:0;max-width:24ch}
 #s2b p+p{margin-top:.5em;color:var(--lamp)}
-.glowS{position:absolute;inset:0;background:radial-gradient(40% 55% at 50% 50%,rgba(242,181,68,.42),rgba(242,181,68,.06) 60%,transparent 75%);opacity:0}
+.glowS{position:absolute;inset:0;background:radial-gradient(40% 55% at 50% 50%,rgba(201,139,111,.42),rgba(201,139,111,.06) 60%,transparent 75%);opacity:0}
 /* beat FX */
-#pulse{position:absolute;inset:0;z-index:50;pointer-events:none;background:radial-gradient(60% 70% at 50% 50%,rgba(242,181,68,.16),transparent 70%);opacity:0;mix-blend-mode:screen}
+#pulse{position:absolute;inset:0;z-index:50;pointer-events:none;background:radial-gradient(60% 70% at 50% 50%,rgba(201,139,111,.16),transparent 70%);opacity:0;mix-blend-mode:screen}
 #flash{position:absolute;inset:0;z-index:52;background:#fff;opacity:0;pointer-events:none}
 #burst{position:absolute;inset:0;z-index:51;pointer-events:none;width:1920px;height:1080px}
 .ring{position:absolute;left:50%;top:50%;width:60px;height:60px;margin:-30px 0 0 -30px;border-radius:50%;border:4px solid var(--lamp);opacity:0;pointer-events:none}
@@ -101,7 +101,7 @@ body{font:400 28px/1.5 var(--sans);-webkit-font-smoothing:antialiased;color:#fff
 #ripple{position:absolute;width:90px;height:90px;border-radius:50%;border:4px solid var(--lamp);z-index:19;opacity:0}
 
 /* S7 */
-#s7{background:radial-gradient(55% 65% at 50% 42%,rgba(242,181,68,.20),transparent 70%),var(--green);display:grid;place-items:center;text-align:center}
+#s7{background:radial-gradient(55% 65% at 50% 42%,rgba(201,139,111,.20),transparent 70%),var(--green);display:grid;place-items:center;text-align:center}
 #s7 .endMark{width:120px;height:auto;display:block;margin:0 auto 40px}
 #s7 .cap{font-size:100px}
 #s7 .sub{margin:26px auto 0;max-width:none;font-size:36px}
@@ -430,7 +430,7 @@ const SC = {
     b.style.opacity = bp;
     b.style.transform = `translateY(${(1-bp)*20}px) scale(${1 - press*.04})`;
     const g = prog(u,2.45,3.1);
-    b.style.boxShadow = g > 0 && g < 1 ? `0 0 0 ${eout(g)*20}px rgba(242,181,68,${.35*(1-g)})` : 'none';
+    b.style.boxShadow = g > 0 && g < 1 ? `0 0 0 ${eout(g)*20}px rgba(201,139,111,${.35*(1-g)})` : 'none';
     rise($('#foot'), u, 1.2, .5, 10);
   }
 };

@@ -88,7 +88,6 @@ for b in range(int(12 / BAR), int(28.8 / BAR)):
 n = int(3.6 * SR); t = T(n); p = t / 3.6
 sw = sum(np.sin(2 * np.pi * hz(m) * t) for m in [53, 60, 65, 69]) * p ** 2
 add(lp(sw, 1800), 8.4, .03)
-add(lp(rng.standard_normal(n), 900) * p ** 3, 8.4, .05)
 # final chord rings out
 for k, m in enumerate([41, 53, 57, 60, 64, 67, 72]):
     add(rhodes(m, 1.4 + 1.6), 28.8 + k * .015, .07 if m > 45 else .1, ((k % 2) * 2 - 1) * .2)
@@ -124,9 +123,24 @@ tick(23.4 + 1.2, .07); tick(23.4 + 2.4, .07)
 # S7: button
 tick(26.4 + 2.4, .06); note(89, 26.4 + 2.42, .035, 0)
 
-# ---- vinyl warmth + master
-crackle = (rng.random(N) > .9994) * rng.standard_normal(N) * .25 + lp(rng.standard_normal(N), 4000) * .004
-L += crackle; R += crackle
+# ---- very faint rain: individual droplets only, no hiss bed
+def rain_channel(seed):
+    r = np.random.default_rng(seed)
+    imp = np.zeros(N)
+    count = int(DUR * 220)
+    pos = r.integers(0, N, count)
+    imp[pos] = r.random(count) ** 3 * (r.random(count) < .97) + (r.random(count) < .03) * r.random(count) * 2.5
+    out = np.zeros(N)
+    for f in (2300, 3100, 4200, 5400):
+        k = T(int(.012 * SR)); ker = np.sin(2 * np.pi * f * k) * np.exp(-k / .0025)
+        part = np.zeros(N); sel = r.random(N) < .25
+        part[sel] = imp[sel]
+        out += np.convolve(part, ker)[:N]
+    out = lp(hp(out, 900), 6500)
+    return out / (np.sqrt((out ** 2).mean()) + 1e-12)
+RAIN_GAIN = .0025
+rl, rr = rain_channel(21), rain_channel(22)
+
 def verb(x):
     ir_n = int(1.8 * SR); ir = lp(rng.standard_normal(ir_n), 3500) * np.exp(-T(ir_n) / .5); ir /= np.sqrt((ir ** 2).sum())
     m = len(x) + ir_n; F = 1 << (m - 1).bit_length()
@@ -135,6 +149,8 @@ L = L + .2 * verb(L); R = R + .2 * verb(R)
 mix = np.stack([lp(L, 9000), lp(R, 9000)])
 mix = np.tanh(mix * 1.1) / 1.1
 mix *= .88 / np.abs(mix).max()
+mix[0] += rl * RAIN_GAIN; mix[1] += rr * RAIN_GAIN
+mix *= min(1, .89 / np.abs(mix).max())
 fi = int(.3 * SR); mix[:, :fi] *= np.linspace(0, 1, fi)
 fo = int(1.0 * SR); mix[:, -fo:] *= np.linspace(1, 0, fo) ** 1.5
 w = wave.open('audio.wav', 'wb'); w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR)
