@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --green:#065442; --deep:#032E24; --ink:#000; --paper:#fff; --mist:#EEF3F0; --line:#CFDDD6; --lamp:#F2B544; --muted:#4A615A;
+  --green:#065442; --deep:#032E24; --ink:#000; --paper:#fff; --mist:#EEF3F0; --line:#CFDDD6; --rose-gold:#C98B6F; --muted:#4A615A;
   --serif:Tinos,"Times New Roman",Georgia,serif;
   --sans:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
@@ -22,7 +22,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px);scroll-behavio
 body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
 img,svg{max-width:100%}
 a{color:inherit}
-:focus-visible{outline:3px solid var(--lamp);outline-offset:3px;border-radius:4px}
+:focus-visible{outline:3px solid var(--rose-gold);outline-offset:3px;border-radius:4px}
 .wrap{max-width:1160px;margin:0 auto;padding:0 20px}
 @media (min-width:600px){.wrap{padding:0 24px}}
 
@@ -47,8 +47,8 @@ body.pre #brandMark,body.landing #brandMark{visibility:hidden}
 .lbl-short{display:none}
 @media (max-width:400px){.lbl-long{display:none}.lbl-short{display:inline}.bar .btn{padding:10px 20px}}
 .btn-green:hover{background:var(--deep)}
-.btn-lamp{background:var(--lamp);color:var(--ink)}
-.btn-lamp:hover{transform:translateY(-1px)}
+.btn-rose{background:var(--rose-gold);color:var(--ink)}
+.btn-rose:hover{transform:translateY(-1px)}
 .btn-ghost{background:transparent;color:var(--green);border:1.5px solid var(--green)}
 
 /* Intro */
@@ -70,11 +70,11 @@ body.pre #brandMark,body.landing #brandMark{visibility:hidden}
 .split .cap,.split .sub{text-align:left;margin-left:0}
 
 /* poster */
-.poster{position:absolute;inset:0;z-index:5;display:grid;place-items:center;text-align:center;background:radial-gradient(60% 70% at 50% 40%,rgba(242,181,68,.22),transparent 70%),var(--deep);color:#fff;padding:24px}
+.poster{position:absolute;inset:0;z-index:5;display:grid;place-items:center;text-align:center;background:radial-gradient(60% 70% at 50% 40%,rgba(201,139,111,.22),transparent 70%),var(--deep);color:#fff;padding:24px}
 .poster[hidden]{display:none}
 .poster h2{font:400 clamp(26px,3.6vw,46px)/1.1 var(--serif);margin:0 0 10px}
 .poster p{margin:0 0 26px;opacity:.8}
-.play-big{width:84px;height:84px;border-radius:50%;border:0;background:var(--lamp);display:grid;place-items:center;cursor:pointer;margin:0 auto 22px;transition:transform .2s}
+.play-big{width:84px;height:84px;border-radius:50%;border:0;background:var(--rose-gold);display:grid;place-items:center;cursor:pointer;margin:0 auto 22px;transition:transform .2s}
 .play-big:hover{transform:scale(1.06)}
 
 /* controls */
@@ -127,11 +127,11 @@ body.pre #brandMark,body.landing #brandMark{visibility:hidden}
 
 /* Scene 5: two lines */
 .two p{font:400 clamp(24px,3.6vw,48px)/1.2 var(--serif);margin:0;text-align:center;max-width:24ch}
-.two p+p{margin-top:.6em;opacity:0;color:var(--lamp)}
+.two p+p{margin-top:.6em;opacity:0;color:var(--rose-gold)}
 .active.two p+p{animation:fadein .8s 2.2s forwards}
 
 /* Scene 6: lamp */
-.glow{position:absolute;inset:0;background:radial-gradient(40% 55% at 50% 45%,rgba(242,181,68,.55),rgba(242,181,68,.08) 60%,transparent 75%);opacity:0;transform:scale(.6);z-index:-1}
+.glow{position:absolute;inset:0;background:radial-gradient(40% 55% at 50% 45%,rgba(201,139,111,.55),rgba(201,139,111,.08) 60%,transparent 75%);opacity:0;transform:scale(.6);z-index:-1}
 .active .glow{animation:glow 2.6s ease-out forwards}
 @keyframes glow{to{opacity:1;transform:none}}
 
@@ -175,7 +175,7 @@ body.pre #brandMark,body.landing #brandMark{visibility:hidden}
 .opt label{display:flex;align-items:center;gap:10px;min-height:56px;padding:14px 16px;border:1.5px solid var(--line);border-radius:14px;cursor:pointer;font-weight:500;transition:border-color .15s,background .15s}
 .opt label:hover{border-color:var(--green)}
 .opt input:checked+label{border-color:var(--green);background:var(--mist);color:var(--green)}
-.opt input:focus-visible+label{outline:3px solid var(--lamp);outline-offset:2px}
+.opt input:focus-visible+label{outline:3px solid var(--rose-gold);outline-offset:2px}
 .field{display:grid;gap:6px;margin-bottom:16px}
 .field label{font-weight:600;font-size:15px}
 .field input[type=text],.field input[type=tel],.field input[type=email]{font:inherit;padding:14px 16px;border:1.5px solid var(--line);border-radius:12px;width:100%;max-width:460px;background:#fff}
@@ -459,7 +459,7 @@ body.pre main{transform:translateY(24px)}
             <svg style="color:#fff"><use href="#mark"/></svg>
             <p class="cap">Coming soon. Starting in Lucknow.</p>
             <p class="sub">Tell us what home should feel like and get first dibs.</p>
-            <a class="btn btn-lamp" href="#survey">Answer 8 quick questions</a>
+            <a class="btn btn-rose" href="#survey">Answer 8 quick questions</a>
           </div>
         </div>
       </div>
