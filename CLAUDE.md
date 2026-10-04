@@ -18,7 +18,7 @@ A waitlist and validation site. Flow: intro animation → story "video" (animate
 ## Brand
 - Colors: green `#065442` (primary), deep `#032E24`, black `#000`, white `#FFF`, mist `#EEF3F0`, lamp accent `#F2B544`.
 - Logo mark: a traced SVG (`<symbol id="mark">`, viewBox `0 0 138 158.5`), slightly faceted because it came from a low-res screenshot. Replace it with a vector from the original Canva PNGs.
-- Header lockup: mark + "LVII" + "Co-living / REDEFINED". The footer matches.
+- Header lockup: mark + "LVII" + "Co-living / REDEFINED". Both lines use Onest 400; `fitTagline()` sets REDEFINED's letter-spacing (and shrinks it if needed) so it is exactly as wide as the line above. The footer is "LVII Co-living / REDEFINED" with the same treatment and no other text.
 
 ## Intro sequence (about 6.5s, no skip button, respects reduced motion)
 1. Pine image, no fog or rain, with a crisp white "LVII" (Tinos 700) centred.

@@ -36,10 +36,12 @@ body.pre #brandMark,body.landing #brandMark{visibility:hidden}
 @keyframes snap{0%{transform:scale(1.18)}100%{transform:none}}
 .brand b{font:500 24px/1 var(--sans);letter-spacing:.02em}
 .brand span{font-size:14px;color:var(--muted);padding-left:10px;border-left:1px solid var(--line)}
-.tag-lines{display:flex;flex-direction:column;line-height:1.15}
-.tag-lines small{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);font-weight:600;margin-top:2px}
-.foot-brand{display:flex;flex-direction:column;gap:2px}
-.foot-brand small{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);font-weight:600}
+.tag-lines{display:flex;flex-direction:column;align-items:flex-start;line-height:1.15}
+.foot-brand{display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+.tag-lines em,.foot-brand em{font-style:normal;white-space:nowrap}
+/* "Redefined": same face and weight as the line above; letter-spacing is set by fitTagline() so both lines are the same width */
+.tag-lines small,.foot-brand small{font:inherit;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);white-space:nowrap}
+.tag-lines small{margin-top:2px}
 .btn{min-height:44px;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:12px 22px;font:600 15px/1 var(--sans);cursor:pointer;text-decoration:none;transition:background .2s,transform .2s}
 .btn-green{background:var(--green);color:#fff}
 .lbl-short{display:none}
@@ -290,7 +292,7 @@ body.pre main{transform:translateY(24px)}
 
 <header class="bar">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="LVII Co-living home"><svg id="brandMark" viewBox="0 0 138 158.5"><use href="#mark" width="138" height="158.5"/></svg><b>LVII</b><span class="tag-lines">Co-living<small>Redefined</small></span></a>
+    <a class="brand" href="#top" aria-label="LVII Co-living home"><svg id="brandMark" viewBox="0 0 138 158.5"><use href="#mark" width="138" height="158.5"/></svg><b>LVII</b><span class="tag-lines"><em>Co-living</em><small>Redefined</small></span></a>
     <a class="btn btn-green" href="#survey"><span class="lbl-long">Join the waitlist</span><span class="lbl-short">Join</span></a>
   </div>
 </header>
@@ -516,12 +518,31 @@ body.pre main{transform:translateY(24px)}
 
 <footer>
   <div class="wrap">
-    <span class="foot-brand">LVII Co-living<small>Redefined</small></span>
-    <span>A Maaef Group venture</span>
+    <span class="foot-brand"><em>LVII Co-living</em><small>Redefined</small></span>
   </div>
 </footer>
 
 <script>
+
+/* ---------- Tagline: stretch "Redefined" to the width of the line above ---------- */
+(() => {
+  function fitTagline(){
+    document.querySelectorAll('.tag-lines, .foot-brand').forEach(el => {
+      const top = el.querySelector('em'), sub = el.querySelector('small');
+      sub.style.cssText = 'letter-spacing:0px;margin-right:0px';
+      const gaps = sub.textContent.length - 1, T = top.getBoundingClientRect().width;
+      // Caps are wide: if 12px would need tight tracking to fit, shrink the size so it keeps at least .08em of air.
+      const fs = parseFloat(getComputedStyle(sub).fontSize), perPx = sub.getBoundingClientRect().width / fs;
+      if (T < fs * (perPx + .08 * gaps)) sub.style.fontSize = (T / (perPx + .08 * gaps)) + 'px';
+      const ls = (T - sub.getBoundingClientRect().width) / gaps;
+      sub.style.letterSpacing = ls + 'px';
+      sub.style.marginRight = -ls + 'px'; // cancel the spacing after the last letter so the right edges line up
+    });
+  }
+  fitTagline();
+  document.fonts && document.fonts.ready.then(fitTagline);
+  addEventListener('resize', fitTagline);
+})();
 
 /* ---------- Intro sequence ---------- */
 (() => {
