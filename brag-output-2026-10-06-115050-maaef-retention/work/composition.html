@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Maaef — the four wings</title>
+<style>
+/* Brand kit: Panchang SemiBold headers, Verdana Bold sub-headers, Verdana Regular body.
+   Colours: white #fff, black #000, dark maroon #7a0e0e, light grey #e0e0e0, grey #747375. */
+@font-face{font-family:Panchang;src:url(fonts/Panchang-Semibold.otf) format('opentype');font-weight:600}
+:root{--maroon:#7a0e0e;--black:#000;--white:#fff;--lgrey:#e0e0e0;--grey:#747375;
+  --display:Panchang,sans-serif;--sans:Verdana,"DejaVu Sans",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
+body{font-family:var(--sans);color:#fff}
+
+#bg{position:absolute;inset:-200px;background:
+  linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px) 0 0/80px 80px,
+  linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px) 0 0/80px 80px,
+  linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px) 0 0/16px 16px,
+  linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px) 0 0/16px 16px,#000}
+#vig{position:absolute;inset:0;background:radial-gradient(70% 70% at 50% 45%,transparent 40%,rgba(0,0,0,.85));pointer-events:none;z-index:30}
+#floorWrap{position:absolute;left:-50%;right:-50%;bottom:-120px;height:760px;perspective:700px;perspective-origin:50% 0;opacity:0}
+#floor{position:absolute;inset:0;transform:rotateX(72deg);transform-origin:50% 0;background:
+  linear-gradient(rgba(255,255,255,.2) 2px,transparent 2px) 0 0/120px 120px,
+  linear-gradient(90deg,rgba(255,255,255,.2) 2px,transparent 2px) 0 0/120px 120px;
+  -webkit-mask-image:linear-gradient(transparent,#000 40%)}
+
+.scene{position:absolute;inset:0;visibility:hidden;z-index:10;overflow:hidden}
+.scene.light{background:var(--lgrey);color:#000}
+.scene.maroon{background:var(--maroon)}
+.pgrid{position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px) 0 0/80px 80px,linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px) 0 0/80px 80px}
+.light .pgrid{background:linear-gradient(rgba(0,0,0,.06) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(90deg,rgba(0,0,0,.06) 1px,transparent 1px) 0 0/40px 40px}
+.cam{position:absolute;inset:0;transform-style:preserve-3d}
+.disp{font-family:var(--display);font-weight:600;line-height:1}
+.glow{text-shadow:0 0 8px rgba(255,255,255,.45),0 0 26px rgba(255,255,255,.18),0 0 70px rgba(122,14,14,.95)}
+.ch{display:inline-block;white-space:pre}.wd{display:inline-block;white-space:nowrap}
+.hl{position:relative;display:inline-block;padding:0 .12em;margin-left:-.12em;background:linear-gradient(#7a0e0e,#7a0e0e) no-repeat 0 60%/var(--hs,0%) 86%}
+.star{font:700 1em var(--sans);display:inline-block;color:var(--maroon)}
+.maroon .star{color:#fff}
+
+/* HUD */
+#hud{position:absolute;inset:0;z-index:40;pointer-events:none;font:400 18px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.65)}
+#hud .b{position:absolute;width:34px;height:34px;border:2px solid currentColor;opacity:.8}
+#hud .tl{left:40px;top:40px;border-right:0;border-bottom:0}#hud .tr{right:40px;top:40px;border-left:0;border-bottom:0}
+#hud .bl{left:40px;bottom:40px;border-right:0;border-top:0}#hud .br{right:40px;bottom:40px;border-left:0;border-top:0}
+#hud .fig{position:absolute;left:92px;top:48px}#hud .brand{position:absolute;right:92px;top:48px}
+#hud .loc{position:absolute;left:92px;bottom:48px}#hud .tc{position:absolute;right:92px;bottom:48px}
+#hud .ruler{position:absolute;left:420px;right:420px;bottom:58px;height:10px;background:repeating-linear-gradient(90deg,currentColor 0 1px,transparent 1px 24px);opacity:.6}
+#hud .ruler i{position:absolute;top:-6px;width:2px;height:22px;background:var(--maroon)}
+#hud.dark{color:rgba(0,0,0,.6)}
+
+/* cover */
+#cover .bigstar{position:absolute;left:150px;top:150px;font:700 200px/1 var(--sans);color:var(--maroon)}
+#cover .word{position:absolute;left:150px;top:380px;font-size:260px;letter-spacing:.04em}
+#cover .tag{position:absolute;left:156px;top:690px;font:700 52px var(--sans)}
+#cover .loc{position:absolute;left:156px;top:780px;font:400 28px var(--sans);letter-spacing:.3em;color:rgba(255,255,255,.75)}
+
+/* who */
+#who .k{position:absolute;left:150px;top:190px;font:700 30px var(--sans);color:rgba(255,255,255,.75)}
+#who h1{position:absolute;left:150px;top:250px;font-size:100px;line-height:1.12;white-space:nowrap}
+#who p{position:absolute;left:150px;top:700px;font:400 40px var(--sans)}
+
+/* currencies */
+#cur .k{position:absolute;left:150px;top:190px;font:700 40px var(--sans)}
+#cur .list{position:absolute;left:150px;top:300px;display:grid;grid-template-columns:1fr 1fr;gap:40px 60px;width:1620px}
+#cur .c{position:relative;font-size:96px;padding:30px 36px;white-space:nowrap}
+#cur .c .bx{position:absolute;inset:0;border:3px solid var(--maroon);box-shadow:0 0 24px rgba(122,14,14,.8),inset 0 0 24px rgba(122,14,14,.45)}
+
+/* overview */
+#over .k{position:absolute;left:150px;top:180px;font:700 40px var(--sans);max-width:1500px;line-height:1.35}
+#over .tiles{position:absolute;left:150px;top:360px;width:1620px;display:grid;grid-template-columns:repeat(4,1fr);gap:26px}
+#over .tile{height:430px;border:2px solid rgba(255,255,255,.55);background:rgba(0,0,0,.7);padding:34px 30px;position:relative}
+#over .tile .n{font:400 22px var(--sans);letter-spacing:.14em;color:rgba(255,255,255,.6)}
+#over .tile .nm{font:600 40px var(--display);margin:26px 0 22px}
+#over .tile .r{font:700 28px/1.3 var(--sans)}
+#over .tile .star{position:absolute;right:26px;bottom:14px;font-size:90px}
+
+/* wing pages */
+.wing .lab{position:absolute;left:150px;top:150px;font:700 34px var(--sans);color:var(--maroon)}
+.wing.maroon .lab,.wing.black .lab{color:#fff}
+.wing .cnt{position:absolute;right:150px;top:156px;font:400 26px var(--sans);letter-spacing:.14em;opacity:.7}
+.wing h2{position:absolute;left:150px;top:215px;font-size:128px;white-space:nowrap}
+.wing .role{position:absolute;left:156px;top:400px;font:700 44px var(--sans)}
+.wing .line{position:absolute;left:156px;top:470px;font:400 34px/1.45 var(--sans);max-width:1000px;opacity:.9}
+.wing .svcs{position:absolute;left:150px;top:640px;width:1040px;display:grid;grid-template-columns:1fr 1fr;gap:16px 24px}
+.wing .svc{font:700 28px var(--sans);padding:14px 20px;border:2px solid currentColor;white-space:nowrap;display:flex;align-items:center;gap:14px}
+.wing .svc .star{font-size:30px}
+.wing .ws{position:absolute;left:1290px;top:560px;width:480px;background:#000;color:#fff;padding:36px 36px 40px}
+.wing.black .ws{background:var(--maroon)}
+.wing .ws .h{font:700 22px var(--sans);letter-spacing:.16em}
+.wing .ws .t{font:600 36px/1.15 var(--display);margin:22px 0 16px}
+.wing .ws .d{font:400 24px/1.45 var(--sans);opacity:.85}
+.wing .bigstar{position:absolute;right:150px;top:330px;font:700 170px/1 var(--sans);color:var(--maroon);opacity:.9}
+.wing.maroon .bigstar{color:#fff;opacity:.18}
+
+/* crew */
+#crew .k{position:absolute;left:150px;top:150px;font:700 30px var(--sans);opacity:.85}
+#crew h2{position:absolute;left:150px;top:200px;font-size:100px;white-space:nowrap}
+#crew p{position:absolute;left:156px;top:360px;font:400 36px var(--sans)}
+#crew .cards{position:absolute;left:150px;top:470px;width:1620px;display:grid;grid-template-columns:repeat(4,1fr);gap:26px}
+#crew .card{border:3px solid #fff;padding:34px 30px 40px;min-height:330px}
+#crew .card b{display:block;font:600 38px var(--display);white-space:nowrap;margin-bottom:22px}
+#crew .card span{display:block;font:700 30px/1.3 var(--sans)}
+#crew .card i{display:block;font:400 24px/1.45 var(--sans);font-style:normal;margin-top:18px;opacity:.85}
+
+/* loop */
+#loop .ring{position:absolute;left:510px;top:-60px;width:900px;height:900px;overflow:visible}
+#loop .nd{position:absolute;width:300px;padding:16px 0;text-align:center;border:2px solid rgba(255,255,255,.6);background:#000;font:600 30px var(--display)}
+#loop .txt{position:absolute;left:0;right:0;top:760px;text-align:center}
+#loop .l1{font-size:54px}
+#loop .l2{font-size:54px;margin-top:20px}
+
+/* close */
+#close .a{position:absolute;left:0;right:0;top:250px;text-align:center;font-size:96px;line-height:1.2}
+#close .bigM{position:absolute;left:50%;top:500px;font-size:280px;line-height:1}
+#close .end{position:absolute;left:0;right:0;top:520px;text-align:center}
+#close .end .lock{display:inline-flex;align-items:center;gap:40px}
+#close .end img{height:190px;display:block}
+#close .end .mw{font-size:170px;letter-spacing:.04em}
+#close .end .sig{font:700 34px var(--sans);margin-top:40px}
+#close .end .sig2{font:400 26px var(--sans);letter-spacing:.2em;margin-top:16px;opacity:.75}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<div id="floorWrap"><div id="floor"></div></div>
+
+<div class="scene" id="cover"><div class="cam">
+  <div class="bigstar" id="coverStar">*</div>
+  <div class="word disp glow" data-sweep="MAAEF"></div>
+  <div class="tag" id="coverTag">The Sovereign Collective</div>
+  <div class="loc" id="coverLoc">LUCKNOW, INDIA</div>
+</div></div>
+
+<div class="scene" id="who"><div class="cam">
+  <div class="k" id="whoK">who we are</div>
+  <h1 class="disp glow"><span data-sweep="A COLLECTIVE THAT"></span><br><span data-sweep="REFUSES TO BE"></span><br><span class="hl" id="oneThing"><span data-sweep="ONE THING."></span></span></h1>
+  <p id="whoP">Consultants, makers, storytellers and hosts under one roof.</p>
+</div></div>
+
+<div class="scene" id="cur"><div class="cam">
+  <div class="k" id="curK">We trade in four currencies:</div>
+  <div class="list">
+    <div class="c disp glow"><i class="bx"></i><span data-sweep="Attention"></span></div>
+    <div class="c disp glow"><i class="bx"></i><span data-sweep="Precision"></span></div>
+    <div class="c disp glow"><i class="bx"></i><span data-sweep="Trust"></span></div>
+    <div class="c disp glow"><i class="bx"></i><span data-sweep="Time"></span></div>
+  </div>
+</div></div>
+
+<div class="scene" id="over"><div class="cam">
+  <div class="k" id="overK">A Lucknow-based group of four distinct but connected businesses.</div>
+  <div class="tiles">
+    <div class="tile"><div class="n">01 / 04</div><div class="nm">.enterprises</div><div class="r">Institutional consultancy</div><span class="star">*</span></div>
+    <div class="tile"><div class="n">02 / 04</div><div class="nm">.studio</div><div class="r">Things you can hold</div><span class="star">*</span></div>
+    <div class="tile"><div class="n">03 / 04</div><div class="nm">.media</div><div class="r">Stories that travel</div><span class="star">*</span></div>
+    <div class="tile"><div class="n">04 / 04</div><div class="nm">.afterhours</div><div class="r">Rooms worth being in</div><span class="star">*</span></div>
+  </div>
+</div></div>
+
+<div id="wings"></div>
+
+<div class="scene maroon" id="crew"><div class="pgrid"></div><div class="cam">
+  <div class="k" id="crewK">how the collective helps a brand</div>
+  <h2 class="disp"><span data-sweep="CHOOSE YOUR CREW."></span></h2>
+  <p id="crewP">Pick one arm, pair two, or bring the whole collective.</p>
+  <div class="cards">
+    <div class="card"><b>SOLO</b><span>Any one arm</span><i>One sharp problem, solved properly.</i></div>
+    <div class="card"><b>DUO</b><span>.media + .studio</span><i>A launch that lives on screen and on the shelf.</i></div>
+    <div class="card"><b>TRIO</b><span>.enterprises + .studio + .media</span><i>Fix the operation, make the product, then tell its story.</i></div>
+    <div class="card"><b>ALL FOUR</b><span>The full collective</span><i>Build it, make it, tell it, and gather people around it.</i></div>
+  </div>
+</div></div>
+
+<div class="scene" id="loop"><div class="cam">
+  <svg class="ring" viewBox="0 0 900 900"><circle cx="450" cy="450" r="270" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2" stroke-dasharray="8 10"/><circle id="orb" r="12" fill="#fff" style="filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 26px #7a0e0e)"/></svg>
+  <div class="nd" id="nd0">.enterprises</div><div class="nd" id="nd1">.studio</div><div class="nd" id="nd2">.media</div><div class="nd" id="nd3">.afterhours</div>
+  <div class="txt">
+    <div class="l1 disp glow" data-sweep="Every arm stands on its own."></div>
+    <div class="l2 disp glow" data-sweep="What one creates, the next amplifies."></div>
+  </div>
+</div></div>
+
+<div class="scene" id="close"><div class="cam">
+  <div class="a disp glow" id="closeA"><span data-sweep="The more the merrier."></span><br><span data-sweep="We're all about"></span></div>
+  <div class="bigM disp" id="bigM"><span class="hl">M.</span></div>
+  <div class="end" id="closeEnd">
+    <div class="lock"><img src="img/logo.png" id="closeMark" alt=""><div class="mw disp" id="closeWord">MAAEF</div></div>
+    <div class="sig" id="closeSig">A Sovereign Collective</div>
+    <div class="sig2" id="closeSig2">Lucknow, India</div>
+  </div>
+</div></div>
+
+<div id="vig"></div>
+<div id="hud">
+  <div class="b tl"></div><div class="b tr"></div><div class="b bl"></div><div class="b br"></div>
+  <div class="fig" id="fig"></div><div class="brand">Maaef · The Sovereign Collective</div>
+  <div class="loc">Lucknow, India</div><div class="tc" id="tc"></div>
+  <div class="ruler"><i id="playhead"></i></div>
+</div>
+
+<script src="cues.js"></script>
+<script>
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const clamp = (x,a=0,b=1) => Math.min(b, Math.max(a, x));
+const prog = (t,a,b) => clamp((t-a)/(b-a));
+const eio = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+const eout = t => 1-Math.pow(1-t,3);
+const eout5 = t => 1-Math.pow(1-t,5);
+const back = t => { const c1=1.3, c3=c1+1; return 1 + c3*Math.pow(t-1,3) + c1*Math.pow(t-1,2); };
+const lerp = (a,b,p) => a+(b-a)*p;
+
+// the four wings (Maaef Incorporated — The Collective)
+const WINGS = [
+  {id:'w0', bg:'black', tag:'.enterprises', n:'01 / 04', name:'ENTERPRISES', role:'Institutional consultancy',
+   line:'We find where an institution leaks, fix how it runs, and supply what it needs.',
+   svcs:['Institutional Diagnostics','GeM & Marketplaces','Product Management','Tenders & Commodities','AI Automation & Dashboards','Corporate Concierge'],
+   ws:['Diagnose, then deliver','We audit first, so every fix and every supply order has a reason.']},
+  {id:'w1', bg:'light', tag:'.studio', n:'02 / 04', name:'STUDIOS', role:'Things you can hold',
+   line:'If it can be printed, produced or put in a box, we make it.',
+   svcs:['Print','Production','Self-Publishing','White Labelling'],
+   ws:['Flexible MOQs','Small test batches or bulk runs; the order fits the brand.']},
+  {id:'w2', bg:'maroon', tag:'.media', n:'03 / 04', name:'MEDIA HOUSE', role:'Stories that travel',
+   line:'Artists disguised as a media house. We make the scroll stop.',
+   svcs:['Social Media Management','Shoots','Scripting','Video Editing','Design & Motion','Campaigns & PR'],
+   ws:['Planned before it\'s shot','Every piece gets a full Recipe Card before a camera rolls.']},
+  {id:'w3', bg:'black', tag:'.afterhours', n:'04 / 04', name:'AFTERHOURS', role:'Rooms worth being in',
+   line:'Where a brand stops talking and starts hosting.',
+   svcs:['Networking','Workshops','Collaborative Merchandise','Cult & Community','Brand IP & Podcasts','IP Consulting'],
+   ws:['Community, not crowds','Built patiently, so brands meet people who stay.']},
+];
+$('#wings').innerHTML = WINGS.map(w => `
+<div class="scene wing ${w.bg === 'light' ? 'light' : w.bg === 'maroon' ? 'maroon' : 'black'}" id="${w.id}">${w.bg !== 'black' ? '<div class="pgrid"></div>' : ''}<div class="cam">
+  <div class="bigstar">*</div>
+  <div class="lab">${w.tag}</div><div class="cnt">${w.n}</div>
+  <h2 class="disp ${w.bg === 'light' ? '' : 'glow'}"><span data-sweep="${w.name}"></span></h2>
+  <div class="role">${w.role}</div>
+  <div class="line">${w.line}</div>
+  <div class="svcs">${w.svcs.map(s => `<div class="svc"><span class="star">*</span>${s}</div>`).join('')}</div>
+  <div class="ws"><div class="h">WORTH SAYING</div><div class="t">${w.ws[0]}</div><div class="d">${w.ws[1]}</div></div>
+</div></div>`).join('');
+
+$$('[data-sweep]').forEach(el => {
+  el.innerHTML = el.dataset.sweep.split(' ').map(w => `<span class="wd">${[...w].map(c => `<span class="ch">${c}</span>`).join('')}</span>`).join('<span class="ch"> </span>');
+});
+// letters light up left to right (opacity + small rise; colour stays the scene's own)
+function sweep(el, u, a, d){
+  const cs = el.querySelectorAll('.ch'), n = cs.length;
+  cs.forEach((c,i) => {
+    const p = prog(u, a + d*i/n, a + d*i/n + .14);
+    c.style.opacity = p > 0 ? lerp(.1, 1, p) : 0;
+    c.style.transform = `translateY(${(1-eout(p))*12}px)`;
+  });
+}
+function rise(el, u, a, d=.45, dy=20){ const p = eout(prog(u,a,a+d)); el.style.opacity = p; el.style.transform = `translateY(${(1-p)*dy}px)`; }
+const hs = (el, p) => el.style.setProperty('--hs', `${p*100}%`);
+
+// ---- timeline comes from build_vo.py (voice-first edit): scene cuts + when each line / word is spoken
+const LABELS = {cover:'fig. 01 — the collective', who:'fig. 02 — who we are', cur:'fig. 03 — four currencies', over:'fig. 04 — four wings',
+  w0:'wing 01 — .enterprises', w1:'wing 02 — .studio', w2:'wing 03 — .media', w3:'wing 04 — .afterhours',
+  crew:'fig. 05 — choose your crew', loop:'fig. 06 — the loop', close:'fig. 07 — all about M'};
+const SCENES = TL.scenes.map(([id,a,b]) => [id, a, b, LABELS[id]]);
+SCENES[SCENES.length-1][2] += .01;
+const C = TL.cues, TOTAL = TL.total;
+const S = id => SCENES.find(x => x[0] === id)[1];          // scene start
+const E = id => SCENES.find(x => x[0] === id)[2];          // scene end
+// word onset: first word in line `key` starting with `w` (n-th match)
+const wt = (key, w, n = 0) => C[key].w.filter(x => x[0].startsWith(w))[n][1];
+const W = .28;                                              // whip transition (half on each side of the cut)
+const breathe = t => Math.exp(-(t % 1)/.25);
+const LEAD = .06;                                           // visuals land a hair before the word
+
+function render(t){
+  let fig = '', cur = '';
+  SCENES.forEach(([id,a,b,f], i) => {
+    const el = document.getElementById(id), on = t >= a && t < b;
+    el.style.visibility = on ? 'visible' : 'hidden';
+    if (!on) return;
+    fig = f; cur = id;
+    const pin = i > 0 ? 1 - eout(prog(t, a, a + W)) : 0, pout = i < SCENES.length-1 ? eio(prog(t, b - W, b)) : 0;
+    el.style.transform = `translateX(${pin*380 - pout*380}px) scale(${1 + .003*breathe(t)})`;
+    el.style.filter = (pin + pout) > .01 ? `blur(${(pin+pout)*14}px)` : 'none';
+    (SC[id] || SC.wing)(t, el, id, a, b);
+  });
+  $('#bg').style.transform = `translate(${(-t*20) % 80}px,${(-t*8) % 80}px)`;
+  $('#floorWrap').style.opacity = ['cur','over','loop'].includes(cur) ? 1 : 0;
+  $('#floor').style.backgroundPosition = `0 ${t*120}px`;
+  const light = cur === 'w1';
+  $('#vig').style.opacity = light ? 0 : (['w2','crew'].includes(cur) ? .45 : 1);
+  $('#hud').classList.toggle('dark', light);
+  $('#fig').textContent = fig;
+  $('#tc').textContent = `00:00:${String(Math.floor(t)).padStart(2,'0')}:${String(Math.floor((t%1)*30)).padStart(2,'0')}`;
+  $('#playhead').style.left = `${(t/TOTAL)*100}%`;
+  $('#hud').style.opacity = eout(prog(t,0,.5));
+}
+
+// camera: continuous drift across the whole scene (a constant, gentle pattern interrupt)
+const cam = (el, rx0, rx1, ry0, ry1, z0, z1, d) => el.querySelector('.cam').style.transform =
+  `perspective(1800px) rotateX(${rx0 + (rx1-rx0)*d}deg) rotateY(${ry0 + (ry1-ry0)*d}deg) translateZ(${z0 + (z1-z0)*d}px)`;
+const span = (t, a, b) => eio(prog(t, a, b));
+
+const SC = {
+  cover(t, el, id, a, b){
+    cam(el, 10, 2, -8, 2, -160, 30, eout(prog(t, a, b)));
+    const sp = prog(t, 0, .6);
+    $('#coverStar').style.opacity = sp > 0 ? 1 : 0;
+    $('#coverStar').style.transform = `rotate(${lerp(-180,0,eout5(sp)) + t*10}deg) scale(${lerp(.3,1,back(sp))})`;
+    sweep($('#cover .word'), t, C.cover.s - .15, .45);                       // MAAEF as "Maaef" is spoken
+    rise($('#coverTag'), t, wt('cover','the') - LEAD, .35);                    // "The Sovereign Collective"
+    rise($('#coverLoc'), t, wt('cover','collective'), .4, 10);
+  },
+  who(t, el, id, a, b){
+    cam(el, -3, 3, 8, -4, -80, 50, span(t, a, b));
+    rise($('#whoK'), t, a + .05, .3, 10);
+    const s = $$('#who h1 [data-sweep]');
+    sweep(s[0], t, wt('who1','a') - LEAD, wt('who1','refuses') - wt('who1','a'));
+    sweep(s[1], t, wt('who1','refuses') - LEAD, wt('who1','one') - wt('who1','refuses'));
+    sweep(s[2], t, wt('who1','one') - LEAD, .35);
+    hs($('#oneThing'), eio(prog(t, wt('who1','thing'), wt('who1','thing') + .3)));
+    rise($('#whoP'), t, C.who2.s - LEAD, .35);
+  },
+  cur(t, el, id, a, b){
+    cam(el, 18, 10, 10, -6, 0, 0, span(t, a, b));
+    rise($('#curK'), t, Math.max(a, C.cur1.s - LEAD), .3);
+    const words = ['attention','precision','trust','time'];
+    $$('#cur .c').forEach((c,i) => {
+      const at = wt('cur2', words[i]) - LEAD, p = prog(t, at, at + .3);
+      c.style.opacity = p > 0 ? 1 : 0;
+      c.style.transform = `scale(${lerp(1.08,1,eout(p))})`;
+      c.querySelector('.bx').style.clipPath = `inset(0 ${(1-eout(p))*100}% 0 0)`;
+      sweep(c.querySelector('[data-sweep]'), t, at, .25);
+    });
+  },
+  over(t, el, id, a, b){
+    cam(el, 16, 8, -8, 6, 0, 0, span(t, a, b));
+    rise($('#overK'), t, C.over.s - LEAD, .35);
+    // tiles land on "four", "distinct", "connected", "businesses"
+    const at = [wt('over','four'), wt('over','distinct'), wt('over','connected'), wt('over','businesses')];
+    $$('#over .tile').forEach((c,i) => {
+      const p = prog(t, at[i] - LEAD, at[i] + .35);
+      c.style.opacity = eout(p); c.style.transform = `translateY(${(1-eout(p))*50}px)`;
+      c.querySelector('.star').style.transform = `rotate(${t*25 + i*20}deg)`;
+    });
+  },
+  wing(t, el, id, a, b){
+    const n = C[id + 'n'], l = C[id + 'l'], w = C[id + 'w'];
+    cam(el, 4, 0, -6, 3, -40, 30, span(t, a, b));
+    rise(el.querySelector('.lab'), t, a, .3, 10); rise(el.querySelector('.cnt'), t, a, .3, 10);
+    sweep(el.querySelector('h2 [data-sweep]'), t, Math.max(a + .02, n.s - LEAD), .45);   // title with the spoken name
+    rise(el.querySelector('.role'), t, n.e - .05, .35);
+    rise(el.querySelector('.line'), t, l.s - LEAD, .35);
+    const svcs = el.querySelectorAll('.svc'), step = Math.min(.22, (l.e - l.s - .6) / svcs.length);
+    svcs.forEach((s,i) => {
+      const at = l.s + .4 + i*step, p = eout(prog(t, at, at + .35));
+      s.style.opacity = p; s.style.transform = `translateY(${(1-p)*16}px)`;
+    });
+    const ws = el.querySelector('.ws'), wp = eout(prog(t, w.s - .15, w.s + .3));             // panel with "worth saying" line
+    ws.style.opacity = wp; ws.style.transform = `translateX(${(1-wp)*60}px)`;
+    const bs = el.querySelector('.bigstar');
+    bs.style.transform = `rotate(${(t - a)*14}deg) scale(${lerp(.6,1,eout(prog(t, a + .1, a + .8)))})`;
+  },
+  crew(t, el, id, a, b){
+    cam(el, 6, 2, -2, -1, 0, 20, eout(prog(t, a, b)));
+    rise($('#crewK'), t, a, .3, 10);
+    sweep($('#crew h2 [data-sweep]'), t, Math.max(a + .02, C.crew1.s - LEAD), .45);
+    rise($('#crewP'), t, C.crew2.s - LEAD, .35);
+    // SOLO on "one arm", DUO on "pair two", TRIO on "bring", ALL FOUR on "whole collective"
+    const at = [wt('crew2','one'), wt('crew2','pair'), wt('crew2','bring'), wt('crew2','whole')];
+    $$('#crew .card').forEach((c,i) => {
+      const p = prog(t, at[i] - LEAD, at[i] + .3);
+      c.style.opacity = .15 + .85*eout(p); c.style.transform = `translateY(${(1-eout(p))*30}px)`;
+      c.style.background = `rgba(0,0,0,${.3*eout(p)})`;
+    });
+  },
+  loop(t, el, id, a, b){
+    cam(el, 18, 8, 0, 0, 0, 0, eout(prog(t, a, b)));
+    const u = t - a, R = 270, cx = 960, cy = 390, ang = -Math.PI/2 + (u/2)*Math.PI*2;
+    $('#orb').setAttribute('cx', 450 + Math.cos(ang)*R); $('#orb').setAttribute('cy', 450 + Math.sin(ang)*R);
+    [0,1,2,3].forEach(k => {
+      const ak = -Math.PI/2 + k*Math.PI/2, nd = $(`#nd${k}`);
+      nd.style.left = `${cx + Math.cos(ak)*R - 150}px`; nd.style.top = `${cy + Math.sin(ak)*R - 32}px`;
+      const diff = ((ang - ak) % (Math.PI*2) + Math.PI*2) % (Math.PI*2), hit = Math.exp(-diff/.6);
+      nd.style.borderColor = `rgba(255,255,255,${.5 + .5*hit})`; nd.style.boxShadow = `0 0 ${10 + 40*hit}px rgba(122,14,14,${.4 + .6*hit})`;
+      nd.style.opacity = eout(prog(u, .05 + k*.08, .3 + k*.08));
+    });
+    sweep($('#loop .l1'), t, Math.max(a + .02, C.loop1.s - LEAD), (C.loop1.e - C.loop1.s) * .7);
+    sweep($('#loop .l2'), t, C.loop2.s - LEAD, (C.loop2.e - C.loop2.s) * .7);
+  },
+  close(t, el, id, a, b){
+    cam(el, 0, 0, -5, 0, -50, 0, eout(prog(t, a, a + 3)));
+    const s = $$('#closeA [data-sweep]');
+    sweep(s[0], t, Math.max(a + .02, C.close1.s - LEAD), (C.close1.e - C.close1.s) * .7);
+    sweep(s[1], t, C.close2.s - LEAD, (wt('close2','m') - C.close2.s) * .8);
+    const mAt = wt('close2','m') - .04;                                  // "M." slams on the spoken "M"
+    const out = prog(t, C.close3.s - .35, C.close3.s);
+    $('#closeA').style.opacity = 1 - eio(out); $('#closeA').style.transform = `translateY(${-eio(out)*80}px)`;
+    const M = $('#bigM'), mp = prog(t, mAt, mAt + .25);
+    M.style.opacity = mp > 0 ? 1 - prog(t, C.close3.s - .35, C.close3.s - .1) : 0;
+    M.style.transform = `translateX(-50%) scale(${lerp(1.5,1,eout5(mp))})`;
+    hs(M.querySelector('.hl'), eout(prog(t, mAt, mAt + .25)));
+    // lockup with the second "Maaef" (logo as supplied: no glow or rotation)
+    $('#closeEnd').style.opacity = t > C.close3.s - .2 ? 1 : 0;
+    const lp = eout(prog(t, C.close3.s - .15, C.close3.s + .45));
+    $('#closeMark').style.opacity = lp; $('#closeMark').style.transform = `translateX(${(1-lp)*-40}px)`;
+    sweep($('#closeWord'), t, C.close3.s - .05, .4);
+    rise($('#closeSig'), t, wt('close3','a') - LEAD, .35); rise($('#closeSig2'), t, wt('close3','collective'), .35, 10);
+  }
+};
+// MAAEF in the close lockup sweeps too
+$('#closeWord').innerHTML = [...'MAAEF'].map(c => `<span class="ch">${c}</span>`).join('');
+window.render = render;
+window.ready = Promise.all([document.fonts.load('600 40px Panchang'), document.fonts.ready, ...[...document.images].map(i => i.decode())]);
+render(0);
+</script>
+</body>
+</html>
