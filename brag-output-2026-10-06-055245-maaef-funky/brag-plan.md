@@ -18,3 +18,19 @@ Restyled after the reference video ("Motion graphics?"): a dark blueprint grid w
 
 ## Sound
 An original funk groove at 120 BPM, a D Dorian vamp (Dm7 | G9). It has a syncopated kick, snare + clap on 2 and 4, 16th hats, a slap-bass riff, wah clav stabs and brass hits on the big moments. It breaks down for the paper form and lands on a Dm9 chord. SFX are typing ticks, clav blips on the light-ups, tonal whips on the transitions and ticks on the checkboxes, all in key.
+
+## Voiceover (added)
+Kokoro-82M (open-weights TTS, voice `af_heart`) run locally; the script is `work/voiceover.py`. Every line is PDF copy, placed on the beat its visual lands. In the arms section the voice says each arm's one-liner while the screen shows the name. "Maaef" itself is not spoken because its pronunciation is unconfirmed. The music ducks ~7 dB under the voice. `brag-music-only.mp4` keeps the earlier music-only mix.
+
+| Time | Line |
+|---|---|
+| 4.2 | A collective that refuses to be one thing. |
+| 6.75 | Consultants, makers, storytellers and hosts, under one roof. |
+| 10.2 | Attention, precision, trust and time. |
+| 13.35 / 15.35 / 17.35 / 19.35 | Institutional consultancy. / Things you can hold. / Stories that travel. / Rooms worth being in. |
+| 21.25 | Choose your crew. |
+| 22.35 | Pick one arm, pair two, or bring the whole collective. |
+| 25.3 | Every arm stands on its own. |
+| 26.85 | What one creates, the next amplifies. |
+| 29.25 | The more the merrier. |
+| 30.2 | We're all about M. |

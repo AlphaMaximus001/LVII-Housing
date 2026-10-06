@@ -17,3 +17,5 @@ brag-output-*/work/stills/
 brag-output-*/work/*.log
 brag-output-*/work/*.jpg
 brag-output-*/work/audio.wav
+brag-output-*/work/audio_vo.wav
+brag-output-*/work/voiceover_only.wav
