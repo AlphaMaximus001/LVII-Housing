@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Maaef Collective — funky cut</title>
+<style>
+@font-face{font-family:Panchang;src:url(fonts/Panchang-Semibold.otf) format('opentype');font-weight:600}
+:root{--red:#7a0e0e;--ink:#000;--paper:#fff;
+  --display:Panchang,sans-serif;--mono:"Courier New","Liberation Mono",monospace;--sans:Verdana,"DejaVu Sans",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
+body{font-family:var(--sans);color:#fff}
+
+/* blueprint grid world */
+#bg{position:absolute;inset:-200px;background:
+  linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px) 0 0/80px 80px,
+  linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px) 0 0/80px 80px,
+  linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px) 0 0/16px 16px,
+  linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px) 0 0/16px 16px,#000}
+#vig{position:absolute;inset:0;background:radial-gradient(70% 70% at 50% 45%,transparent 40%,rgba(0,0,0,.85));pointer-events:none;z-index:30}
+#floorWrap{position:absolute;left:-50%;right:-50%;bottom:-120px;height:760px;perspective:700px;perspective-origin:50% 0;opacity:0}
+#floor{position:absolute;inset:0;transform:rotateX(72deg);transform-origin:50% 0;background:
+  linear-gradient(rgba(255,255,255,.22) 2px,transparent 2px) 0 0/120px 120px,
+  linear-gradient(90deg,rgba(255,255,255,.22) 2px,transparent 2px) 0 0/120px 120px;
+  -webkit-mask-image:linear-gradient(transparent,#000 40%)}
+
+.scene{position:absolute;inset:0;visibility:hidden;z-index:10}
+.cam{position:absolute;inset:0;transform-style:preserve-3d}
+.disp{font-family:var(--display);font-weight:600;line-height:.98}
+.mono{font-family:var(--mono)}
+.glow{color:#fff;text-shadow:0 0 8px rgba(255,255,255,.55),0 0 26px rgba(255,255,255,.22),0 0 70px rgba(122,14,14,.95)}
+.ch{display:inline-block;white-space:pre}
+.wd{display:inline-block;white-space:nowrap}
+.hl{position:relative;display:inline-block;padding:0 .12em;margin-left:-.12em;background:linear-gradient(#7a0e0e,#7a0e0e) no-repeat 0 60%/var(--hs,0%) 84%}
+.hl>i{display:none}
+.hl>span{position:relative;z-index:1}
+.hl>i{position:absolute;left:0;top:.06em;bottom:.02em;background:var(--red);transform-origin:0 50%;z-index:0;box-shadow:0 0 40px rgba(122,14,14,.9)}
+.cursor{display:inline-block;width:.55em;height:1em;background:#fff;vertical-align:-.12em;margin-left:.06em;box-shadow:0 0 12px rgba(255,255,255,.7)}
+.ann{position:absolute;font:400 20px var(--mono);letter-spacing:.08em;color:rgba(255,255,255,.6);text-transform:uppercase}
+.lead{position:absolute;height:1px;background:rgba(255,255,255,.45);transform-origin:0 50%}
+
+/* HUD */
+#hud{position:absolute;inset:0;z-index:40;pointer-events:none;font:400 19px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.62)}
+#hud .b{position:absolute;width:34px;height:34px;border:2px solid rgba(255,255,255,.55)}
+#hud .tl{left:40px;top:40px;border-right:0;border-bottom:0}#hud .tr{right:40px;top:40px;border-left:0;border-bottom:0}
+#hud .bl{left:40px;bottom:40px;border-right:0;border-top:0}#hud .br{right:40px;bottom:40px;border-left:0;border-top:0}
+#hud .fig{position:absolute;left:92px;top:48px}
+#hud .brand{position:absolute;right:92px;top:48px}
+#hud .loc{position:absolute;left:92px;bottom:48px}
+#hud .tc{position:absolute;right:92px;bottom:48px}
+#hud .ruler{position:absolute;left:420px;right:420px;bottom:58px;height:10px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.4) 0 1px,transparent 1px 24px)}
+#hud .ruler i{position:absolute;top:-6px;width:2px;height:22px;background:var(--red);box-shadow:0 0 10px rgba(122,14,14,1)}
+
+/* S1 cover */
+#s1 .word{position:absolute;left:50%;top:330px;transform:translateX(-50%);font-size:270px;letter-spacing:.05em;white-space:nowrap}
+#s1 .ubar{position:absolute;left:330px;top:630px;margin-left:0;height:10px;background:var(--red);box-shadow:0 0 30px rgba(122,14,14,1);transform-origin:0 50%}
+#s1 .type{position:absolute;left:0;right:0;text-align:center;top:680px;font:400 46px var(--mono);letter-spacing:.04em}
+#s1 .ann{left:330px;top:290px}
+
+/* S2 who */
+#s2 h1{position:absolute;left:180px;top:250px;font-size:96px;line-height:1.1;white-space:nowrap}
+#s2 .strike{position:absolute;height:9px;background:#fff;box-shadow:0 0 14px rgba(255,255,255,.9),0 0 40px rgba(122,14,14,1);transform-origin:0 50%}
+#s2 .type{position:absolute;left:180px;top:700px;font:400 36px var(--mono)}
+#s2 .ann{left:180px;top:205px}
+
+/* S3 currencies */
+#s3 .panel{position:absolute;left:310px;top:200px;width:1300px;height:560px;border:2px solid rgba(255,255,255,.5);background:rgba(0,0,0,.55);box-shadow:0 0 60px rgba(122,14,14,.35)}
+#s3 .ph{position:absolute;left:0;right:0;top:0;height:46px;border-bottom:1px solid rgba(255,255,255,.3);font:400 18px var(--mono);letter-spacing:.14em;padding:13px 20px;color:rgba(255,255,255,.6);text-transform:uppercase}
+#s3 .type{position:absolute;left:44px;top:84px;font:400 40px var(--mono)}
+#s3 .cg{position:absolute;left:44px;top:180px;right:44px;display:grid;grid-template-columns:1fr 1fr;gap:34px 40px}
+#s3 .cur{position:relative;font-size:72px;white-space:nowrap;padding:22px 26px}
+#s3 .cur .bx{position:absolute;inset:0;border:2px solid var(--red);box-shadow:0 0 24px rgba(122,14,14,.8),inset 0 0 24px rgba(122,14,14,.5)}
+
+/* S4 diagram */
+#s4 .world{position:absolute;left:0;top:0;width:4200px;height:1080px}
+#s4 .wire{position:absolute;top:539px;height:2px;background:rgba(255,255,255,.35)}
+#s4 .dot{position:absolute;top:532px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 0 14px #fff,0 0 40px rgba(122,14,14,1)}
+#s4 .node{position:absolute;top:360px;width:760px;height:360px;border:2px solid rgba(255,255,255,.55);background:rgba(0,0,0,.7);padding:40px 44px}
+#s4 .node .t{font:400 28px var(--mono);letter-spacing:.06em;color:rgba(255,255,255,.75)}
+#s4 .node .n{font-size:62px;margin:22px 0 18px;white-space:nowrap}
+#s4 .node .s{font:700 34px var(--sans)}
+#s4 .node .c{position:absolute;right:24px;top:20px;font:400 20px var(--mono);color:rgba(255,255,255,.5)}
+#s4 .svc{position:absolute;font:400 24px var(--mono);letter-spacing:.04em;white-space:nowrap;color:#fff}
+#s4 .svc b{font-weight:400;color:rgba(255,255,255,.55)}
+
+/* S5 paper form */
+#s5 .paper{position:absolute;left:150px;top:90px;width:1620px;height:900px;background:#fff;color:#000;box-shadow:0 40px 120px rgba(0,0,0,.7);background-image:
+  linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px}
+#s5 .band{position:absolute;left:60px;right:60px;top:60px;height:130px;background:#000;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 40px}
+#s5 .band .disp{font-size:60px;white-space:nowrap}
+#s5 .band .m{font:400 18px var(--mono);letter-spacing:.14em;text-transform:uppercase;text-align:right;line-height:1.6;color:rgba(255,255,255,.75)}
+#s5 .type{position:absolute;left:100px;top:230px;font:400 34px var(--mono)}
+#s5 .rows{position:absolute;left:100px;right:100px;top:320px}
+#s5 .row{display:flex;align-items:center;gap:30px;height:118px;border-bottom:2px solid #000}
+#s5 .cb{width:46px;height:46px;border:3px solid #000;position:relative;flex:none}
+#s5 .cb svg{position:absolute;left:-8px;top:-14px;width:66px;height:66px;overflow:visible}
+#s5 .row .k{font:600 46px var(--display);width:380px}
+#s5 .row .v{font:700 34px var(--sans)}
+#s5 .circ{position:absolute;overflow:visible}
+#s5 .foot{position:absolute;left:100px;bottom:40px;font:400 20px var(--sans);color:rgba(0,0,0,.6)}
+
+/* S6 loop */
+#s6 .ring{position:absolute;left:510px;top:-60px;width:900px;height:900px;overflow:visible}
+#s6 .nd{position:absolute;width:300px;padding:16px 0;text-align:center;border:2px solid rgba(255,255,255,.6);background:rgba(0,0,0,.8);font:600 30px var(--display)}
+#s6 .txt{position:absolute;left:0;right:0;top:760px;text-align:center}
+#s6 .l1{font-size:52px}
+#s6 .l2{font-size:52px;margin-top:14px}
+#s6 .type{font:400 34px var(--mono);margin-top:26px}
+
+/* S7 M */
+#s7 .a{position:absolute;left:0;right:0;top:300px;text-align:center;font-size:96px;line-height:1.15}
+#s7 .bigM{position:absolute;left:50%;top:520px;font-size:300px;line-height:1}
+#s7 .end{position:absolute;left:0;right:0;top:520px;text-align:center}
+#s7 .end img{width:140px}
+#s7 .end .mw{font-size:120px;letter-spacing:.05em;margin-top:24px}
+#s7 .end .sig{font:400 26px var(--mono);letter-spacing:.08em;margin-top:22px;color:rgba(255,255,255,.75)}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<div id="floorWrap"><div id="floor"></div></div>
+
+<div class="scene" id="s1"><div class="cam">
+  <div class="word disp glow" data-sweep="MAAEF"></div>
+  <div class="ubar" id="s1bar"></div>
+  <div class="type glow" data-type="The Sovereign Collective"></div>
+</div></div>
+
+<div class="scene" id="s2"><div class="cam">
+  <div class="ann">who we are</div>
+  <h1 class="disp glow"><span data-sweep="A COLLECTIVE THAT"></span><br><span data-sweep="REFUSES TO BE"></span><br><span class="hl" id="oneThing"><i></i><span data-sweep="ONE THING."></span></span></h1>
+  <div class="strike" id="strike"></div>
+  <div class="type glow" data-type="Consultants, makers, storytellers and hosts under one roof."></div>
+</div></div>
+
+<div class="scene" id="s3"><div class="cam">
+  <div class="panel">
+    <div class="ph">who we are · currencies</div>
+    <div class="type glow" data-type="We trade in four currencies:"></div>
+    <div class="cg">
+      <div class="cur disp glow"><i class="bx"></i><span data-sweep="Attention"></span></div>
+      <div class="cur disp glow"><i class="bx"></i><span data-sweep="Precision"></span></div>
+      <div class="cur disp glow"><i class="bx"></i><span data-sweep="Trust"></span></div>
+      <div class="cur disp glow"><i class="bx"></i><span data-sweep="Time"></span></div>
+    </div>
+  </div>
+</div></div>
+
+<div class="scene" id="s4"><div class="cam"><div class="world" id="world"></div></div></div>
+
+<div class="scene" id="s5"><div class="cam">
+  <div class="paper">
+    <div class="band"><div class="disp">CHOOSE YOUR CREW.</div><div class="m">how the collective helps a brand<br>Maaef · A Sovereign Collective · Lucknow</div></div>
+    <div class="type" data-type="Pick one arm, pair two, or bring the whole collective." data-dark="1"></div>
+    <div class="rows">
+      <div class="row"><span class="cb"><svg viewBox="0 0 66 66"><path d="M8 34 L26 52 L60 6" fill="none" stroke="#7a0e0e" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="k">SOLO</span><span class="v">Any one arm</span></div>
+      <div class="row"><span class="cb"><svg viewBox="0 0 66 66"><path d="M8 34 L26 52 L60 6" fill="none" stroke="#7a0e0e" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="k">DUO</span><span class="v">.media + .studio</span></div>
+      <div class="row"><span class="cb"><svg viewBox="0 0 66 66"><path d="M8 34 L26 52 L60 6" fill="none" stroke="#7a0e0e" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="k">TRIO</span><span class="v">.enterprises + .studio + .media</span></div>
+      <div class="row" id="allFour"><span class="cb"><svg viewBox="0 0 66 66"><path d="M8 34 L26 52 L60 6" fill="none" stroke="#7a0e0e" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="k">ALL FOUR</span><span class="v">The full collective</span></div>
+    </div>
+    <svg class="circ" id="circ"><path id="circPath" fill="none" stroke="#7a0e0e" stroke-width="7" stroke-linecap="round"/></svg>
+  </div>
+</div></div>
+
+<div class="scene" id="s6"><div class="cam">
+  <svg class="ring" viewBox="0 0 900 900"><circle cx="450" cy="450" r="270" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2" stroke-dasharray="8 10"/><circle id="orb" r="12" fill="#fff" style="filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 26px #7a0e0e)"/></svg>
+  <div class="nd" id="nd0">.enterprises</div><div class="nd" id="nd1">.studio</div><div class="nd" id="nd2">.media</div><div class="nd" id="nd3">.afterhours</div>
+  <div class="txt">
+    <div class="l1 disp glow" data-sweep="Every arm stands on its own."></div>
+    <div class="l2 disp glow" data-sweep="Together they form a self-sustaining loop:"></div>
+    <div class="type glow mono" data-type="what one creates, the next amplifies."></div>
+  </div>
+</div></div>
+
+<div class="scene" id="s7"><div class="cam">
+  <div class="a disp glow" id="s7a"><span data-sweep="The more the merrier."></span><br><span data-sweep="We're all about"></span></div>
+  <div class="bigM disp glow" id="bigM"><span class="hl"><i></i>M.</span></div>
+  <div class="end" id="s7end">
+    <img src="img/logo.png" id="s7mark">
+    <div class="mw disp glow" data-sweep="MAAEF"></div>
+    <div class="sig" id="s7sig">Maaef · A Sovereign Collective · Lucknow</div>
+  </div>
+</div></div>
+
+<div id="vig"></div>
+<div id="hud">
+  <div class="b tl"></div><div class="b tr"></div><div class="b bl"></div><div class="b br"></div>
+  <div class="fig" id="fig"></div><div class="brand">Maaef · The Sovereign Collective</div>
+  <div class="loc">Lucknow, India</div><div class="tc" id="tc"></div>
+  <div class="ruler"><i id="playhead"></i></div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const clamp = (x,a=0,b=1) => Math.min(b, Math.max(a, x));
+const prog = (t,a,b) => clamp((t-a)/(b-a));
+const eio = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+const eout = t => 1-Math.pow(1-t,3);
+const eout5 = t => 1-Math.pow(1-t,5);
+const back = t => { const c1=1.4, c3=c1+1; return 1 + c3*Math.pow(t-1,3) + c1*Math.pow(t-1,2); };
+const lerp = (a,b,p) => a+(b-a)*p;
+
+// split sweep text into chars
+$$('[data-sweep]').forEach(el => { el.innerHTML = el.dataset.sweep.split(' ').map(w => `<span class="wd">${[...w].map(c => `<span class="ch">${c}</span>`).join('')}</span>`).join('<span class="ch"> </span>'); });
+
+// arms diagram (copy from the PDF)
+const ARMS = [
+  ['.enterprises','ENTERPRISES','Institutional consultancy',['Institutional Diagnostics','GeM & Marketplaces','Tenders & Commodities','AI Automation & Dashboards']],
+  ['.studio','STUDIOS','Things you can hold',['Print','Production','Self-Publishing','White Labelling']],
+  ['.media','MEDIA HOUSE','Stories that travel',['Shoots','Scripting','Design & Motion','Website Development']],
+  ['.afterhours','AFTERHOURS','Rooms worth being in',['Networking','Workshops','Cult & Community','Brand IP & Podcasts']],
+];
+const NX = k => 580 + k*1000;   // node left
+let html = '';
+for (let k = 0; k < 3; k++) html += `<div class="wire" style="left:${NX(k)+760}px;width:${240}px"></div><div class="dot" id="dot${k}"></div>`;
+ARMS.forEach(([tag,name,sub,svcs],k) => {
+  html += `<div class="node" id="node${k}" style="left:${NX(k)}px"><div class="c">0${k+1} / 04</div><div class="t">${tag}</div><div class="n disp glow" data-sweep="${name}"></div><div class="s">${sub}</div></div>`;
+  svcs.forEach((s,j) => {
+    const top = j < 2, x = NX(k) + 40 + (j%2)*380, y = top ? 250 - (j%2)*0 : 790;
+    html += `<div class="lead" id="ld${k}_${j}" style="left:${x+10}px;top:${top ? y+36 : 720}px;width:2px;height:${top ? 74 : 70}px;transform-origin:50% ${top?'100%':'0'}"></div><div class="svc" id="sv${k}_${j}" style="left:${x}px;top:${y}px"><b>+ </b>${s}</div>`;
+  });
+});
+$('#world').innerHTML = html;
+$$('#world [data-sweep]').forEach(el => { el.innerHTML = el.dataset.sweep.split(' ').map(w => `<span class="wd">${[...w].map(c => `<span class="ch">${c}</span>`).join('')}</span>`).join('<span class="ch"> </span>'); });
+
+function sweep(el, u, a, d){
+  const cs = el.querySelectorAll('.ch'), n = cs.length;
+  cs.forEach((c,i) => {
+    const p = prog(u, a + d*i/n, a + d*i/n + .12);
+    c.style.opacity = p > 0 ? lerp(.12, 1, p) : 0;
+    c.style.color = p >= 1 ? '' : `rgba(255,255,255,${lerp(.25,1,p)})`;
+    c.style.textShadow = p >= 1 ? '' : 'none';
+    c.style.transform = `translateY(${(1-eout(p))*10}px)`;
+  });
+}
+function type(el, u, a, cps){
+  const txt = el.dataset.type, k = Math.floor(clamp((u-a)*cps, 0, txt.length));
+  const done = k >= txt.length, blink = done ? (Math.floor(u*2.5) % 2 === 0) : true;
+  el.innerHTML = (u < a ? '' : txt.slice(0,k)) + (u >= a - .3 ? `<span class="cursor" style="opacity:${blink?1:0};${el.dataset.dark?'background:#000;box-shadow:none':''}"></span>` : '');
+}
+
+// 120 BPM: beat 0.5s, bar 2s
+const SCENES = [['s1',0,4,'fig. 01 — the cover'],['s2',4,9,'fig. 02 — who we are'],['s3',9,13,'fig. 03 — four currencies'],
+  ['s4',13,21,'fig. 04 — the four arms'],['s5',21,25,'form — choose your crew'],['s6',25,29,'fig. 05 — the loop'],['s7',29,34.01,'fig. 06 — all about M']];
+const kickOn = t => (t >= 4 && t < 21) || (t >= 25 && t < 32);
+const kickEnv = t => kickOn(t) ? Math.exp(-(t % .5)/.1) : 0;
+const W = .24;   // whip duration
+
+function render(t){
+  let fig = '';
+  SCENES.forEach(([id,a,b,f], i) => {
+    const el = document.getElementById(id), on = t >= a && t < b;
+    el.style.visibility = on ? 'visible' : 'hidden';
+    if (!on) return;
+    fig = f;
+    const u = t - a, d = b - a;
+    const pin = i > 0 ? 1 - eout(prog(u, 0, W)) : 0, pout = i < SCENES.length-1 ? eio(prog(u, d-W, d)) : 0;
+    el.style.transform = `translateX(${pin*420 - pout*420}px) scale(${1 + .006*kickEnv(t)})`;
+    el.style.filter = (pin + pout) > .01 ? `blur(${(pin+pout)*16}px)` : 'none';
+    SC[id](u, t);
+  });
+  // world: grid drift with the camera, floor only in the 3D scenes
+  const bgx = -t*22, bgy = -t*9;
+  $('#bg').style.transform = `translate(${bgx % 80}px,${bgy % 80}px)`;
+  const floorOn = (t >= 9 && t < 13) || (t >= 25 && t < 29);
+  $('#floorWrap').style.opacity = floorOn ? 1 : 0;
+  $('#floor').style.backgroundPosition = `0 ${t*160}px`;
+  $('#vig').style.opacity = (t >= 21 && t < 25) ? .4 : 1;
+  // HUD
+  const paper = t >= 21 && t < 25;
+  $('#hud').style.color = 'rgba(255,255,255,.62)';
+  $('#fig').textContent = fig;
+  const s = Math.floor(t), fr = Math.floor((t % 1)*30);
+  $('#tc').textContent = `00:00:${String(s).padStart(2,'0')}:${String(fr).padStart(2,'0')}`;
+  $('#playhead').style.left = `${(t/34)*100}%`;
+  $('#hud').style.opacity = eout(prog(t,0,.4));
+}
+
+const SC = {
+  s1(u){
+    const cam = $('#s1 .cam');
+    cam.style.transform = `perspective(1800px) rotateX(${lerp(14,4,eout(prog(u,0,4)))}deg) rotateY(${lerp(-10,2,eio(prog(u,0,4)))}deg) translateZ(${lerp(-200,40,eout(prog(u,0,4)))}px)`;
+    sweep($('#s1 .word'), u, .25, 1.0);
+    const bw = eio(prog(u,1.4,1.8))*1260; $('#s1bar').style.width = `${bw}px`; $('#s1bar').style.left = `${960 - 630}px`;
+    type($('#s1 .type'), u, 1.8, 28);
+  },
+  s2(u){
+    const cam = $('#s2 .cam');
+    cam.style.transform = `perspective(1800px) rotateY(${lerp(9,-4,eio(prog(u,0,5)))}deg) rotateX(${lerp(-4,3,prog(u,0,5))}deg) translateZ(${lerp(-80,60,prog(u,0,5))}px)`;
+    const sp = $$('#s2 h1 [data-sweep]');
+    sweep(sp[0], u, .2, .5); sweep(sp[1], u, .9, .45); sweep(sp[2], u, 1.5, .35);
+    $('#oneThing').style.setProperty('--hs', `${eio(prog(u,1.5,1.8))*100}%`);
+    // the red slash through "ONE THING." on the beat
+    const ot = $('#oneThing').getBoundingClientRect(), cr = $('#s2 .cam').getBoundingClientRect();
+    const st = $('#strike');
+    const h1 = $('#s2 h1');
+    st.style.left = `${180 - 20}px`; st.style.top = `${250 + h1.offsetHeight*0.84}px`;
+    st.style.width = `${$('#oneThing').offsetWidth + 40}px`;
+    const sp2 = prog(u, 2.5, 2.68);
+    st.style.transform = `scaleX(${eout5(sp2)}) rotate(-3deg)`;
+    $('#oneThing').style.transform = u >= 2.5 ? `translateY(${Math.sin(prog(u,2.5,2.8)*Math.PI)*6}px)` : 'none';
+    type($('#s2 .type'), u, 2.75, 52);
+  },
+  s3(u){
+    const cam = $('#s3 .cam');
+    cam.style.transform = `perspective(1600px) translateY(${lerp(60,-10,eout(prog(u,0,4)))}px) rotateX(${lerp(22,12,eout(prog(u,0,4)))}deg) rotateY(${lerp(14,-8,eio(prog(u,0,4)))}deg)`;
+    type($('#s3 .type'), u, .2, 34);
+    $$('#s3 .cur').forEach((c,i) => {
+      const a = 1 + i*.5, p = prog(u, a, a+.25);
+      c.style.opacity = p > 0 ? 1 : 0;
+      c.style.transform = `scale(${lerp(1.15,1,back(p))})`;
+      c.querySelector('.bx').style.clipPath = `inset(0 ${(1-eout(p))*100}% 0 0)`;
+      sweep(c.querySelector('[data-sweep]'), u, a, .25);
+    });
+  },
+  s4(u){
+    // camera pans node to node on the beat, with a slight 3D swing
+    let k = Math.min(3, Math.floor(u/2)), lu = u - k*2;
+    const pan = k + (k < 3 ? eio(prog(lu, 1.75, 2.0)) : 0);
+    const x = -(NX(0) + 380 - 960) - pan*1000;
+    const swing = Math.sin(pan*Math.PI) * 0;
+    $('#world').style.transform = `translateX(${x}px)`;
+    $('#s4 .cam').style.transform = `perspective(1800px) rotateY(${lerp(6,-6,(u%2)/2)}deg) rotateX(4deg)`;
+    $('#s4 .cam').style.filter = (lu > 1.75 && k < 3) ? `blur(${Math.sin(prog(lu,1.75,2)*Math.PI)*6}px)` : 'none';
+    ARMS.forEach((_,j) => {
+      const nu = u - j*2, node = $(`#node${j}`);
+      const on = nu >= 0;
+      node.style.borderColor = nu >= 0 && nu < 2.1 ? '#fff' : 'rgba(255,255,255,.4)';
+      node.style.boxShadow = nu >= 0 && nu < 2.1 ? '0 0 50px rgba(122,14,14,.9), inset 0 0 40px rgba(122,14,14,.45)' : 'none';
+      sweep(node.querySelector('[data-sweep]'), nu, .05, .3);
+      node.querySelector('.s').style.opacity = eout(prog(nu,.35,.6));
+      node.querySelector('.t').style.opacity = j === 0 || nu > -0.3 ? 1 : .4;
+      for (let s = 0; s < 4; s++) {
+        const a = .55 + s*.25, p = eout(prog(nu, a, a+.25));
+        const ld = $(`#ld${j}_${s}`), sv = $(`#sv${j}_${s}`);
+        ld.style.transform = `scaleY(${p})`; sv.style.opacity = p; sv.style.transform = `translateY(${(1-p)*(s<2?10:-10)}px)`;
+      }
+      if (j < 3) {
+        const dp = eio(prog(u, j*2 + 1.5, j*2 + 2.0));
+        const dot = $(`#dot${j}`);
+        dot.style.left = `${NX(j) + 760 + dp*240 - 8}px`;
+        dot.style.opacity = dp > 0 && dp < 1 ? 1 : 0;
+      }
+    });
+  },
+  s5(u){
+    const cam = $('#s5 .cam');
+    cam.style.transform = `perspective(2000px) rotateZ(${lerp(-2.2,-1,prog(u,0,4))}deg) rotateX(${lerp(8,3,eout(prog(u,0,4)))}deg) scale(${lerp(.96,1.02,prog(u,0,4))})`;
+    type($('#s5 .type'), u, .2, 50);
+    $$('#s5 .row').forEach((r,i) => {
+      const a = 1.5 + i*.5, p = eout(prog(u, a, a+.2));
+      const path = r.querySelector('path'); path.style.strokeDasharray = 120; path.style.strokeDashoffset = 120*(1-p);
+      r.style.opacity = eout(prog(u, .9 + i*.1, 1.2 + i*.1));
+    });
+    // hand-drawn red loop around ALL FOUR
+    const row = $('#allFour'), paper = $('#s5 .paper');
+    const x0 = row.offsetLeft + $('#s5 .rows').offsetLeft - 30, y0 = row.offsetTop + $('#s5 .rows').offsetTop + 4, w = 900, h = 110;
+    const c = $('#circ'); c.style.left = `${x0}px`; c.style.top = `${y0}px`; c.setAttribute('width', w); c.setAttribute('height', h);
+    const cx = w/2, cy = h/2, rx = w/2 - 6, ry = h/2 - 4;
+    let d = ''; for (let i = 0; i <= 64; i++) { const a = -2.6 + i/64*Math.PI*2.15, r = 1 + .03*Math.sin(i*1.7); d += `${i?'L':'M'}${cx + Math.cos(a)*rx*r} ${cy + Math.sin(a)*ry*r} `; }
+    const cp = $('#circPath'); cp.setAttribute('d', d);
+    const L = 2300; cp.style.strokeDasharray = L; cp.style.strokeDashoffset = L*(1 - eio(prog(u, 3.6, 3.95)));
+  },
+  s6(u){
+    const cam = $('#s6 .cam');
+    cam.style.transform = `perspective(1800px) rotateX(${lerp(18,8,eout(prog(u,0,4)))}deg) rotateZ(${lerp(-4,2,prog(u,0,4))}deg)`;
+    // orb loops the four arms: one lap per bar
+    const R = 270, cx = 960, cy = 390;
+    const ang = -Math.PI/2 + (u/2)*Math.PI*2;
+    $('#orb').setAttribute('cx', 450 + Math.cos(ang)*R); $('#orb').setAttribute('cy', 450 + Math.sin(ang)*R);
+    [0,1,2,3].forEach(k => {
+      const a = -Math.PI/2 + k*Math.PI/2, nd = $(`#nd${k}`);
+      nd.style.left = `${cx + Math.cos(a)*R - 150}px`; nd.style.top = `${cy + Math.sin(a)*R - 32}px`;
+      const diff = ((ang - a) % (Math.PI*2) + Math.PI*2) % (Math.PI*2);
+      const hit = Math.exp(-diff/0.6);
+      nd.style.borderColor = `rgba(255,255,255,${.5 + .5*hit})`;
+      nd.style.boxShadow = `0 0 ${10 + 50*hit}px rgba(122,14,14,${.4 + .6*hit})`;
+      nd.style.opacity = eout(prog(u, .05 + k*.1, .3 + k*.1));
+    });
+    sweep($('#s6 .l1'), u, .25, .6); sweep($('#s6 .l2'), u, 1.0, .7);
+    type($('#s6 .type'), u, 1.9, 40);
+  },
+  s7(u, t){
+    const cam = $('#s7 .cam');
+    cam.style.transform = `perspective(1800px) rotateY(${lerp(-6,0,eout(prog(u,0,2.5)))}deg) translateZ(${lerp(-60,0,eout(prog(u,0,2.5)))}px)`;
+    const sp = $$('#s7a [data-sweep]');
+    sweep(sp[0], u, .25, .5); sweep(sp[1], u, 1.0, .4);
+    const up = eio(prog(u, 2.5, 2.9));
+    $('#s7a').style.transform = `translateY(${-up*170}px) scale(${lerp(1,.7,up)})`;
+    // big M. slams on the beat, then becomes the lockup
+    const M = $('#bigM'), mp = prog(u, 1.5, 1.72);
+    M.style.opacity = mp > 0 ? 1 - prog(u, 2.5, 2.75) : 0;
+    M.style.transform = `translateX(-50%) scale(${lerp(1.8,1,eout5(mp)) + .04*kickEnv(t)})`;
+    M.querySelector('.hl').style.setProperty('--hs', `${eout(prog(u,1.55,1.75))*100}%`);
+    const e = $('#s7end'); e.style.opacity = u > 2.6 ? 1 : 0;
+    const mk = eout(prog(u, 2.75, 3.1)); $('#s7mark').style.opacity = mk; $('#s7mark').style.transform = `scale(${lerp(.6,1,back(prog(u,2.75,3.1)))})`;
+    sweep($('#s7end [data-sweep]'), u, 3.0, .4);
+    $('#s7sig').style.opacity = eout(prog(u, 3.4, 3.8));
+  }
+};
+window.render = render;
+window.ready = Promise.all([document.fonts.load('600 40px Panchang'), document.fonts.ready, ...[...document.images].map(i => i.decode())]);
+render(0);
+</script>
+</body>
+</html>
