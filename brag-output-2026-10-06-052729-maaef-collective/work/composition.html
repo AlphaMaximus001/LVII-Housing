@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Maaef Collective</title>
+<style>
+@font-face{font-family:Panchang;src:url(fonts/Panchang-Semibold.otf) format('opentype');font-weight:600}
+:root{--red:#7a0e0e;--black:#000;--white:#fff;--ink:#1e1e1e;--grey:#6b6b6b;--rule:#7a0e0e;
+  --display:Panchang,sans-serif;--mono:"Courier New","Liberation Mono",monospace;--sans:Verdana,"DejaVu Sans",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
+body{font-family:var(--sans);color:#fff}
+.scene{position:absolute;inset:0;overflow:hidden;visibility:hidden}
+.red{background:var(--red)}.black{background:#000}.white{background:#fff;color:var(--ink)}
+.disp{font-family:var(--display);font-weight:600;letter-spacing:.005em;line-height:.95}
+.mono{font-family:var(--mono)}
+.foot{position:absolute;left:106px;bottom:66px;font:400 22px var(--sans);opacity:.75}
+.mask{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.06em}
+.mask>span{display:inline-block}
+
+/* 1 cover */
+#cover .word{position:absolute;left:106px;top:290px;font-size:250px;letter-spacing:.04em}
+#cover .tag{position:absolute;left:106px;top:560px;font:600 52px var(--display);font-weight:600;opacity:.95}
+#cover .loc{position:absolute;left:106px;bottom:70px;font:400 22px var(--mono);letter-spacing:.3em}
+#cover .rule{position:absolute;left:0;top:0;height:10px;background:#000}
+
+/* 2 who */
+#who .k{position:absolute;left:106px;top:120px;font:600 28px var(--display)}
+#who h1{position:absolute;left:106px;top:180px;font-size:96px;line-height:1.02;max-width:1700px}
+#who h1 .w{display:inline-block;margin-right:.28em}
+#who p{position:absolute;left:106px;top:560px;font:400 36px/1.5 var(--sans);max-width:1500px}
+#who .bar{position:absolute;left:106px;height:8px;background:var(--red)}
+
+/* 3 currencies */
+#cur .k{position:absolute;left:106px;top:130px;font:400 30px var(--mono);letter-spacing:.06em}
+#cur .list{position:absolute;left:106px;top:220px}
+#cur .c{display:block;font-size:150px;line-height:1.08}
+#cur .c i{font-style:normal;color:rgba(255,255,255,.35)}
+
+/* 4 arms */
+.arm .tagr{position:absolute;left:106px;top:170px;font:600 30px var(--display);color:var(--red)}
+.arm .num{position:absolute;right:106px;top:174px;font:400 24px var(--mono);color:var(--grey)}
+.arm h2{position:absolute;left:106px;top:226px;font-size:128px}
+.arm .lbl{position:absolute;left:106px;top:390px;font:700 46px var(--sans)}
+.arm .grid{position:absolute;left:106px;top:530px;width:1708px;display:grid;grid-template-columns:repeat(4,1fr);column-gap:40px;row-gap:34px}
+.arm .svc{position:relative;padding-top:24px;font:700 34px/1.25 var(--sans)}
+.arm .svc .ln{position:absolute;left:0;top:0;height:4px;background:var(--red)}
+.arm .foot{color:var(--ink);opacity:.6}
+
+/* 5 crew */
+#crew .k{position:absolute;left:106px;top:96px;font:600 28px var(--display)}
+#crew h2{position:absolute;left:106px;top:146px;font-size:104px}
+#crew p.l{position:absolute;left:106px;top:290px;font:400 32px/1.45 var(--sans);max-width:1500px}
+#crew .cards{position:absolute;left:106px;top:440px;width:1708px;display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+#crew .card{border:3px solid rgba(255,255,255,.9);padding:34px 30px 40px;min-height:300px}
+#crew .card b{display:block;font:600 40px var(--display);margin-bottom:22px}
+#crew .card span{display:block;font:700 30px/1.3 var(--sans)}
+#crew .chips{position:absolute;left:106px;bottom:96px;display:flex;gap:18px}
+#crew .chip{font:600 26px var(--display);padding:14px 22px;border:2px solid rgba(255,255,255,.35);color:rgba(255,255,255,.45)}
+#crew .chip.on{background:#fff;color:var(--red);border-color:#fff}
+
+/* 6 close */
+#close .line{position:absolute;left:0;right:0;text-align:center;font-size:84px;line-height:1.2}
+#close .line .w{display:inline-block;margin-right:.26em}
+#close .end{position:absolute;left:0;right:0;top:500px;text-align:center}
+#close img{width:150px;display:inline-block}
+#close .mw{font-size:120px;letter-spacing:.04em;margin-top:26px}
+#close .sig{font:400 26px var(--sans);opacity:.75;margin-top:22px}
+#close .m{color:#fff;position:relative}
+#close .m::after{content:"";position:absolute;left:0;right:0;bottom:-10px;height:8px;background:var(--red);transform:scaleX(var(--u,0));transform-origin:0 50%}
+
+#edge{position:absolute;top:0;bottom:0;width:26px;z-index:60;background:var(--red);visibility:hidden}
+</style>
+</head>
+<body>
+
+<div class="scene red" id="cover">
+  <div class="rule" id="coverRule"></div>
+  <div class="word disp" id="coverWord"></div>
+  <div class="tag disp"><span class="mask"><span id="coverTag">The Sovereign Collective</span></span></div>
+  <div class="loc" id="coverLoc">LUCKNOW, INDIA</div>
+</div>
+
+<div class="scene black" id="who">
+  <div class="k" id="whoK">who we are</div>
+  <h1 class="disp" id="whoH"></h1>
+  <div class="bar" id="whoBar"></div>
+  <p id="whoP">Consultants, makers, storytellers and hosts under one roof.</p>
+  <div class="foot">Maaef · A Sovereign Collective · Lucknow</div>
+</div>
+
+<div class="scene red" id="cur">
+  <div class="k" id="curK">We trade in four currencies:</div>
+  <div class="list disp">
+    <span class="c">Attention</span><span class="c">Precision</span><span class="c">Trust</span><span class="c">Time</span>
+  </div>
+</div>
+
+<div id="arms"></div>
+
+<div class="scene red" id="crew">
+  <div class="k" id="crewK">how the collective helps a brand</div>
+  <h2 class="disp"><span class="mask"><span id="crewH">CHOOSE YOUR CREW.</span></span></h2>
+  <p class="l" id="crewP">Pick one arm, pair two, or bring the whole collective.</p>
+  <div class="cards">
+    <div class="card"><b>SOLO</b><span>Any one arm</span></div>
+    <div class="card"><b>DUO</b><span>.media + .studio</span></div>
+    <div class="card"><b>TRIO</b><span>.enterprises + .studio + .media</span></div>
+    <div class="card"><b>ALL FOUR</b><span>The full collective</span></div>
+  </div>
+  <div class="chips">
+    <span class="chip">.enterprises</span><span class="chip">.studio</span><span class="chip">.media</span><span class="chip">.afterhours</span>
+  </div>
+</div>
+
+<div class="scene black" id="close">
+  <div class="line disp" id="closeLine"></div>
+  <div class="end">
+    <img id="closeMark" src="img/logo.png">
+    <div class="mw disp" id="closeWord">MAAEF</div>
+    <div class="sig" id="closeSig">Maaef · A Sovereign Collective · Lucknow</div>
+  </div>
+</div>
+
+<div id="edge"></div>
+
+<script>
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const clamp = (x,a=0,b=1) => Math.min(b, Math.max(a, x));
+const prog = (t,a,b) => clamp((t-a)/(b-a));
+const eio = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+const eout = t => 1-Math.pow(1-t,3);
+const eout5 = t => 1-Math.pow(1-t,5);
+const lerp = (a,b,p) => a+(b-a)*p;
+
+// ---- build DOM from PDF copy
+$('#coverWord').innerHTML = [...'MAAEF'].map(c => `<span class="mask"><span>${c}</span></span>`).join('');
+$('#whoH').innerHTML = ['A COLLECTIVE THAT','REFUSES TO BE','ONE THING.'].map(l => l.split(' ').map(w => `<span class="w mask"><span>${w}</span></span>`).join('')).join('<br>');
+$('#closeLine').innerHTML = "The more the merrier. We're all about <span class='m'>M.</span>".replace(/(<span class='m'>M\.<\/span>)|(\S+)/g, (m,a,b) => a ? `<span class="w">${a}</span>` : `<span class="w">${b}</span>`).replace('merrier.</span>', 'merrier.</span><br>');
+const ARMS = [
+  ['.enterprises','01 / 04','ENTERPRISES','Institutional consultancy',['Institutional Diagnostics','GeM & Marketplaces','Product Management','Tenders & Commodities','AI Automation & Dashboards','Corporate Concierge']],
+  ['.studio','02 / 04','STUDIOS','Things you can hold',['Print','Production','Self-Publishing','White Labelling']],
+  ['.media','03 / 04','MEDIA HOUSE','Stories that travel',['Social Media Management','Shoots','Scripting','Video Editing','Design & Motion','Campaigns & PR','Product & Performance','Website Development']],
+  ['.afterhours','04 / 04','AFTERHOURS','Rooms worth being in',['Networking','Workshops','Collaborative Merchandise','Cult & Community','Brand IP & Podcasts','IP Consulting']],
+];
+$('#arms').innerHTML = ARMS.map(([tag,num,name,lbl,svcs],i) => `
+<div class="scene white arm" id="arm${i}">
+  <div class="tagr">${tag}</div><div class="num">${num}</div>
+  <h2 class="disp"><span class="mask"><span>${name}</span></span></h2>
+  <div class="lbl">${lbl}</div>
+  <div class="grid">${svcs.map(s => `<div class="svc"><i class="ln"></i>${s}</div>`).join('')}</div>
+  <div class="foot">Maaef · A Sovereign Collective · Lucknow</div>
+</div>`).join('');
+
+// ---- timeline (120 BPM: beat 0.5s)
+const B = .5;
+const SCENES = [['cover',0,3.5,'cut'],['who',3.5,8,'wipe'],['cur',8,11,'wipe'],
+  ['arm0',11,14,'wipe'],['arm1',14,17,'wipe'],['arm2',17,20,'wipe'],['arm3',20,23,'wipe'],
+  ['crew',23,27,'wipe'],['close',27,30.01,'wipe']];
+const WIPE = .4;
+const kickOn = t => (t >= 3.5 && t < 28);
+const kickEnv = t => kickOn(t) ? Math.exp(-(t % B)/.12) : 0;
+
+function maskIn(inner, u, a, d=.4){ const p = eout5(prog(u,a,a+d)); inner.style.transform = `translateY(${(1-p)*105}%)`; }
+function rise(el, u, a, d=.4, dy=24){ const p = eout(prog(u,a,a+d)); el.style.opacity = p; el.style.transform = `translateY(${(1-p)*dy}px)`; }
+
+function render(t){
+  let edge = null;
+  SCENES.forEach(([id,a,b,entry], i) => {
+    const el = document.getElementById(id);
+    const next = SCENES[i+1];
+    const on = t >= a && t < b + (next && next[3]==='wipe' ? WIPE : 0);
+    el.style.visibility = on ? 'visible' : 'hidden';
+    el.style.zIndex = i;
+    el.style.clipPath = 'none';
+    if (entry === 'wipe') {
+      const p = eio(prog(t, a, a+WIPE));
+      if (p < 1) { el.style.clipPath = `inset(0 ${(1-p)*100}% 0 0)`; if (t >= a) edge = [p, el.classList.contains('red') ? '#000' : '#7a0e0e']; }
+    }
+    if (on) { el.style.transform = `scale(${1 + .004*kickEnv(t)})`; SC[id] ? SC[id](t-a, t) : SC.arm(el, t-a, i-3); }
+  });
+  const e = $('#edge');
+  if (edge) { e.style.visibility = 'visible'; e.style.left = `${edge[0]*1920 - 13}px`; e.style.background = edge[1]; }
+  else e.style.visibility = 'hidden';
+}
+
+const SC = {
+  cover(u){
+    $('#coverRule').style.width = `${eio(prog(u,0,1.2))*100}%`;
+    $$('#coverWord .mask > span').forEach((s,i) => maskIn(s, u, .25 + i*B/2, .45));
+    maskIn($('#coverTag'), u, 1.75, .5);
+    rise($('#coverLoc'), u, 2.25, .5, 10);
+  },
+  who(u){
+    rise($('#whoK'), u, .1, .35, 10);
+    const ws = $$('#whoH .w > span');
+    ws.forEach((s,i) => maskIn(s, u, .25 + i*.25, .35));
+    // red rule draws under the last line ("ONE THING.") as it lands
+    const last = $$('#whoH .w').slice(-2), r0 = last[0].getBoundingClientRect(), r1 = last[1].getBoundingClientRect();
+    const bp = eio(prog(u, 2.25, 2.7));
+    const bar = $('#whoBar'); bar.style.left = `${r0.left}px`; bar.style.top = `${r1.bottom + 6}px`; bar.style.width = `${(r1.right - r0.left)*bp}px`;
+    rise($('#whoP'), u, 2.25, .45);
+  },
+  cur(u){
+    rise($('#curK'), u, .15, .35, 10);
+    $$('#cur .c').forEach((c,i) => {
+      const a = .5 + i*B, p = eout5(prog(u, a, a+.35));
+      c.style.opacity = p; c.style.transform = `translateX(${(1-p)*-60}px)`;
+    });
+  },
+  arm(el, u, k){
+    maskIn(el.querySelector('h2 .mask > span'), u, .15, .4);
+    rise(el.querySelector('.tagr'), u, .1, .3, 10);
+    rise(el.querySelector('.num'), u, .1, .3, 10);
+    rise(el.querySelector('.lbl'), u, .5, .35, 16);
+    el.querySelectorAll('.svc').forEach((s,i) => {
+      const a = .75 + i*.125, p = eout(prog(u, a, a+.35));
+      s.querySelector('.ln').style.width = `${eio(prog(u, a, a+.4))*100}%`;
+      s.style.opacity = p; s.style.transform = `translateY(${(1-p)*14}px)`;
+    });
+  },
+  crew(u){
+    rise($('#crewK'), u, .1, .3, 10);
+    maskIn($('#crewH'), u, .2, .45);
+    rise($('#crewP'), u, .5, .4);
+    const cards = $$('#crew .card'), chips = $$('#crew .chip');
+    cards.forEach((c,i) => {
+      const a = 1.0 + i*B, p = eout(prog(u, a, a+.35));
+      c.style.opacity = .25 + .75*p; c.style.transform = `translateY(${(1-p)*30}px)`;
+      c.style.background = u >= a ? `rgba(0,0,0,${.28*eout(prog(u,a,a+.3))})` : 'transparent';
+    });
+    // chips light up with each card: solo = 1 arm, duo = 2, trio = 3, all four = 4
+    const lit = [[2],[1,2],[0,1,2],[0,1,2,3]];
+    const stage = Math.floor((u - 1.0)/B);
+    chips.forEach((c,i) => c.classList.toggle('on', stage >= 0 && lit[Math.min(3,stage)].includes(i)));
+    $('#crew .chips').style.opacity = eout(prog(u, .8, 1.1));
+  },
+  close(u){
+    const ws = $$('#closeLine .w');
+    const up = eio(prog(u, 1.25, 1.75));
+    $('#closeLine').style.top = `${lerp(430, 170, up)}px`;
+    ws.forEach((w,i) => { const p = eout(prog(u, .2 + i*.12, .55 + i*.12)); w.style.opacity = p; w.style.transform = `translateY(${(1-p)*20}px)`; });
+    $('#closeLine .m').style.setProperty('--u', eio(prog(u, 1.0, 1.35)));
+    const mp = eout(prog(u, 1.5, 1.95));
+    $('#closeMark').style.opacity = mp; $('#closeMark').style.transform = `scale(${lerp(.85,1,mp)})`;
+    rise($('#closeWord'), u, 1.7, .45, 20); rise($('#closeSig'), u, 2.0, .45, 10);
+  }
+};
+window.render = render;
+window.ready = Promise.all([document.fonts.load('600 40px Panchang'), document.fonts.ready, ...[...document.images].map(i => i.decode())]);
+render(0);
+</script>
+</body>
+</html>
