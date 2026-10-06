@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Maaef — brand kit cut</title>
+<style>
+/* Brand kit: Panchang SemiBold headers, Verdana Bold sub-headers, Verdana Regular body.
+   Colours: white #fff, black #000, dark maroon #7a0e0e, light grey #e0e0e0, grey #747375. */
+@font-face{font-family:Panchang;src:url(fonts/Panchang-Semibold.otf) format('opentype');font-weight:600}
+:root{--maroon:#7a0e0e;--black:#000;--white:#fff;--lgrey:#e0e0e0;--grey:#747375;
+  --display:Panchang,sans-serif;--sans:Verdana,"DejaVu Sans",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
+body{font-family:var(--sans);color:#fff}
+
+#bg{position:absolute;inset:-200px;background:
+  linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px) 0 0/80px 80px,
+  linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px) 0 0/80px 80px,
+  linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px) 0 0/16px 16px,
+  linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px) 0 0/16px 16px,#000}
+#vig{position:absolute;inset:0;background:radial-gradient(70% 70% at 50% 45%,transparent 40%,rgba(0,0,0,.85));pointer-events:none;z-index:30}
+#floorWrap{position:absolute;left:-50%;right:-50%;bottom:-120px;height:760px;perspective:700px;perspective-origin:50% 0;opacity:0}
+#floor{position:absolute;inset:0;transform:rotateX(72deg);transform-origin:50% 0;background:
+  linear-gradient(rgba(255,255,255,.2) 2px,transparent 2px) 0 0/120px 120px,
+  linear-gradient(90deg,rgba(255,255,255,.2) 2px,transparent 2px) 0 0/120px 120px;
+  -webkit-mask-image:linear-gradient(transparent,#000 40%)}
+
+.scene{position:absolute;inset:0;visibility:hidden;z-index:10;overflow:hidden}
+.cam{position:absolute;inset:0;transform-style:preserve-3d}
+.disp{font-family:var(--display);font-weight:600;line-height:1}
+.sub{font:700 34px var(--sans)}
+.glow{color:#fff;text-shadow:0 0 8px rgba(255,255,255,.5),0 0 26px rgba(255,255,255,.2),0 0 70px rgba(122,14,14,.95)}
+.ch{display:inline-block;white-space:pre}.wd{display:inline-block;white-space:nowrap}
+.hl{position:relative;display:inline-block;padding:0 .12em;margin-left:-.12em;background:linear-gradient(#7a0e0e,#7a0e0e) no-repeat 0 60%/var(--hs,0%) 86%}
+.cursor{display:inline-block;width:.5em;height:1em;background:#fff;vertical-align:-.12em;margin-left:.06em}
+.star{font:700 1em var(--sans);display:inline-block;color:var(--maroon)}
+
+/* HUD (Verdana) */
+#hud{position:absolute;inset:0;z-index:40;pointer-events:none;font:400 18px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.62)}
+#hud .b{position:absolute;width:34px;height:34px;border:2px solid rgba(255,255,255,.55)}
+#hud .tl{left:40px;top:40px;border-right:0;border-bottom:0}#hud .tr{right:40px;top:40px;border-left:0;border-bottom:0}
+#hud .bl{left:40px;bottom:40px;border-right:0;border-top:0}#hud .br{right:40px;bottom:40px;border-left:0;border-top:0}
+#hud .fig{position:absolute;left:92px;top:48px}#hud .brand{position:absolute;right:92px;top:48px}
+#hud .loc{position:absolute;left:92px;bottom:48px}#hud .tc{position:absolute;right:92px;bottom:48px}
+#hud .ruler{position:absolute;left:420px;right:420px;bottom:58px;height:10px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.4) 0 1px,transparent 1px 24px)}
+#hud .ruler i{position:absolute;top:-6px;width:2px;height:22px;background:var(--maroon)}
+#hud.dark{color:rgba(0,0,0,.6)}#hud.dark .b{border-color:rgba(0,0,0,.5)}#hud.dark .ruler{background:repeating-linear-gradient(90deg,rgba(0,0,0,.35) 0 1px,transparent 1px 24px)}
+
+/* S1 */
+#s1 .bigstar{position:absolute;left:180px;top:200px;font:700 220px/1 var(--sans);color:var(--maroon);transform-origin:50% 55%}
+#s1 .lbl{position:absolute;left:180px;top:450px;font:700 30px var(--sans);letter-spacing:.06em}
+#s1 h1{position:absolute;left:180px;top:500px;font-size:132px;line-height:1.08;white-space:nowrap}
+
+/* S2 feed */
+#s2 .feed{position:absolute;left:170px;top:-40px;width:560px;height:1160px;overflow:hidden;-webkit-mask-image:linear-gradient(transparent,#000 16%,#000 84%,transparent)}
+#s2 .col{position:absolute;left:0;top:0;width:100%}
+#s2 .card{height:260px;margin-bottom:28px;border:2px solid rgba(255,255,255,.18);background:rgba(116,115,117,.18);position:relative}
+#s2 .card::before{content:"";position:absolute;left:24px;top:24px;width:60px;height:60px;border-radius:50%;background:rgba(224,224,224,.25)}
+#s2 .card::after{content:"";position:absolute;left:24px;right:24px;bottom:28px;height:14px;background:rgba(224,224,224,.18);box-shadow:0 -30px 0 rgba(224,224,224,.12)}
+#s2 .frame{position:absolute;left:156px;top:396px;width:588px;height:288px;border:6px solid var(--maroon);box-shadow:0 0 40px rgba(122,14,14,.9);opacity:0}
+#s2 .frame .star{position:absolute;right:-28px;top:-62px;font-size:100px}
+#s2 .txt{position:absolute;left:840px;top:330px}
+#s2 .t1{font-size:78px;line-height:1.12}
+#s2 .t2{font-size:78px;line-height:1.12;margin-top:24px}
+
+/* S3 */
+#s3 .l1{position:absolute;left:180px;top:300px;font-size:100px;white-space:nowrap}
+#s3 .strike{position:absolute;height:12px;background:#fff;box-shadow:0 0 14px rgba(255,255,255,.9),0 0 40px rgba(122,14,14,1);transform-origin:0 50%}
+#s3 .work{position:absolute;left:180px;top:520px;font-size:300px;line-height:1}
+
+/* S4 diagram */
+#s4 .world{position:absolute;left:0;top:0;width:5000px;height:1080px}
+#s4 .wire{position:absolute;top:539px;height:2px;background:rgba(255,255,255,.35)}
+#s4 .dot{position:absolute;top:532px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 0 14px #fff,0 0 40px rgba(122,14,14,1)}
+#s4 .node{position:absolute;top:350px;width:820px;height:380px;border:2px solid rgba(255,255,255,.55);background:rgba(0,0,0,.75);padding:40px 46px}
+#s4 .node .t{font:400 24px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+#s4 .node .n{font-size:66px;margin:24px 0 20px;white-space:nowrap}
+#s4 .node .s{font:700 34px var(--sans)}
+#s4 .node .p{font:400 24px/1.45 var(--sans);color:rgba(255,255,255,.75);margin-top:16px;max-width:720px}
+#s4 .tag{position:absolute;font:700 24px var(--sans);white-space:nowrap;padding:10px 18px;border:2px solid rgba(255,255,255,.5);background:#000}
+#s4 .tag .star{margin-right:10px}
+
+/* S5 light grey page */
+#s5{background:var(--lgrey);color:#000}
+#s5 .grid{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.06) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(90deg,rgba(0,0,0,.06) 1px,transparent 1px) 0 0/40px 40px}
+#s5 .k{position:absolute;left:150px;top:150px;font:600 40px var(--display)}
+#s5 .k small{display:block;font:400 22px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--grey);margin-top:12px}
+#s5 .num{position:absolute;left:150px;top:320px;font-size:220px;line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap}
+#s5 .num small{font-size:70px;margin-left:30px}
+#s5 .line{position:absolute;left:150px;top:690px;font:700 40px var(--sans)}
+#s5 .stamp{position:absolute;left:150px;top:790px;font:600 70px var(--display);color:#fff;background:var(--maroon);padding:22px 34px;transform-origin:0 50%}
+#s5 .star{position:absolute;right:150px;top:600px;font-size:300px;line-height:1}
+
+/* S6 values */
+#s6 .k{position:absolute;left:0;right:0;top:170px;text-align:center;font:700 32px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+#s6 .vals{position:absolute;left:0;right:0;top:300px;display:flex;flex-direction:column;align-items:center;gap:18px}
+#s6 .v{font-size:96px;white-space:nowrap;display:flex;align-items:center;gap:34px}
+#s6 .v .star{font-size:70px}
+
+/* S7 maroon close */
+#s7{background:var(--maroon)}
+#s7 .grid{position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px) 0 0/80px 80px,linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px) 0 0/80px 80px}
+#s7 .q1{position:absolute;left:150px;top:200px;font-size:60px;line-height:1.15;white-space:nowrap}
+#s7 .q2{position:absolute;left:150px;top:300px;font-size:90px;line-height:1.1;white-space:nowrap}
+#s7 .logo{position:absolute;left:150px;top:620px;display:flex;align-items:center;gap:30px}
+#s7 .logo img{height:150px;display:block}
+#s7 .logo b{font:600 104px var(--display);color:#fff;letter-spacing:.01em}
+#s7 .tagl{position:absolute;left:150px;top:790px;font:700 40px var(--sans)}
+#s7 .site{position:absolute;left:150px;top:860px;font:400 28px var(--sans);color:rgba(255,255,255,.85)}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<div id="floorWrap"><div id="floor"></div></div>
+
+<div class="scene" id="s1"><div class="cam">
+  <div class="bigstar" id="bigstar">*</div>
+  <div class="lbl" id="s1lbl">Maaef Media House</div>
+  <h1 class="disp glow"><span data-sweep="WE ENGINEER"></span><br><span class="hl" id="att"><span data-sweep="ATTENTION."></span></span></h1>
+</div></div>
+
+<div class="scene" id="s2"><div class="cam">
+  <div class="feed"><div class="col" id="col"></div></div>
+  <div class="frame" id="frame"><span class="star">*</span></div>
+  <div class="txt">
+    <div class="t1 disp glow"><span data-sweep="Make people"></span><br><span data-sweep="stop scrolling"></span></div>
+    <div class="t2 disp glow"><span data-sweep="and actually"></span><br><span class="hl" id="pay"><span data-sweep="pay attention."></span></span></div>
+  </div>
+</div></div>
+
+<div class="scene" id="s3"><div class="cam">
+  <div class="l1 disp glow" id="s3l1"><span data-sweep="Not just"></span> <span id="lookgood" data-sweep="look good —"></span></div>
+  <div class="strike" id="strike"></div>
+  <div class="work disp" id="work"><span class="hl"><span>work.</span></span></div>
+</div></div>
+
+<div class="scene" id="s4"><div class="cam"><div class="world" id="world"></div></div></div>
+
+<div class="scene" id="s5"><div class="grid"></div><div class="cam">
+  <div class="k">Maaef Studios<small>Print production · Lucknow</small></div>
+  <div class="num disp" id="num">10<small>copies</small></div>
+  <div class="line" id="s5line">Whether you need 10 copies or 10,000.</div>
+  <div class="stamp" id="stamp">On time and on spec.</div>
+  <div class="star" id="s5star" style="color:#7a0e0e;font-weight:700;font-family:Verdana">*</div>
+</div></div>
+
+<div class="scene" id="s6"><div class="cam">
+  <div class="k" id="s6k">Core values</div>
+  <div class="vals">
+    <div class="v disp glow"><span class="star">*</span><span data-sweep="Creative"></span></div>
+    <div class="v disp glow"><span class="star">*</span><span data-sweep="Accurate"></span></div>
+    <div class="v disp glow"><span class="star">*</span><span data-sweep="Inclusive"></span></div>
+    <div class="v disp glow"><span class="star">*</span><span data-sweep="Bold"></span></div>
+    <div class="v disp glow"><span class="star">*</span><span data-sweep="Reliable"></span></div>
+  </div>
+</div></div>
+
+<div class="scene" id="s7"><div class="grid"></div><div class="cam">
+  <div class="q1 disp" id="q1"><span data-sweep="Good work comes from the same core:"></span></div>
+  <div class="q2 disp" id="q2"><span data-sweep="showing up with intent."></span></div>
+  <div class="logo" id="logo"><img src="img/logo.png" alt=""><b>MEDIA</b></div>
+  <div class="tagl" id="tagl">Engineering Attention</div>
+  <div class="site" id="site">maaef.com · Lucknow, Uttar Pradesh, India</div>
+</div></div>
+
+<div id="vig"></div>
+<div id="hud">
+  <div class="b tl"></div><div class="b tr"></div><div class="b bl"></div><div class="b br"></div>
+  <div class="fig" id="fig"></div><div class="brand">Maaef Media House</div>
+  <div class="loc">Lucknow, India</div><div class="tc" id="tc"></div>
+  <div class="ruler"><i id="playhead"></i></div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const clamp = (x,a=0,b=1) => Math.min(b, Math.max(a, x));
+const prog = (t,a,b) => clamp((t-a)/(b-a));
+const eio = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+const eout = t => 1-Math.pow(1-t,3);
+const eout5 = t => 1-Math.pow(1-t,5);
+const back = t => { const c1=1.4, c3=c1+1; return 1 + c3*Math.pow(t-1,3) + c1*Math.pow(t-1,2); };
+const lerp = (a,b,p) => a+(b-a)*p;
+const splitSweep = root => root.querySelectorAll('[data-sweep]').forEach(el => {
+  el.innerHTML = el.dataset.sweep.split(' ').map(w => `<span class="wd">${[...w].map(c => `<span class="ch">${c}</span>`).join('')}</span>`).join('<span class="ch"> </span>');
+});
+
+// feed cards
+$('#col').innerHTML = Array.from({length: 40}, () => '<div class="card"></div>').join('');
+
+// four arms (Brand Bible, "The four arms at a glance")
+const ARMS = [
+  ['01 / 04','MEDIA HOUSE','Creative agency','We engineer attention through video, design, photography, web, and brand strategy.',['Video Production','Brand Strategy','Photography','Web Design']],
+  ['02 / 04','STUDIOS','Print production','Bringing ideas to paper — banners, brochures, signage, and all print needs.',['Banners','Brochures','Signage','Packaging']],
+  ['03 / 04','AFTERHOURS','Community & events','A space to meet, learn, and grow — workshops, jams, and gatherings for curious people.',['Workshops','Creative jams','Hangouts','Skill-based events']],
+  ['04 / 04','ENTERPRISES','Govt supply & tenders','Reliable, registered supplier on GeM — serving print and irrigation departments across UP.',['GeM Registered','Print materials','Stationery','Irrigation goods']],
+];
+const STEP = 1100, NX = k => 550 + k*STEP;
+let html = '';
+for (let k = 0; k < 3; k++) html += `<div class="wire" style="left:${NX(k)+820}px;width:${STEP-820}px"></div><div class="dot" id="dot${k}"></div>`;
+ARMS.forEach(([c,name,sub,pos,tags],k) => {
+  html += `<div class="node" id="node${k}" style="left:${NX(k)}px"><div class="t">${c}</div><div class="n disp glow" data-sweep="${name}"></div><div class="s">${sub}</div><div class="p">${pos}</div></div>`;
+  tags.forEach((s,j) => {
+    const top = j < 2, x = NX(k) + 30 + (j%2)*420, y = top ? 250 : 780;
+    html += `<div class="tag" id="tg${k}_${j}" style="left:${x}px;top:${y}px"><span class="star">*</span>${s}</div>`;
+  });
+});
+$('#world').innerHTML = html;
+splitSweep(document);
+
+function sweep(el, u, a, d){
+  const cs = el.querySelectorAll('.ch'), n = cs.length;
+  cs.forEach((c,i) => {
+    const p = prog(u, a + d*i/n, a + d*i/n + .12);
+    c.style.opacity = p > 0 ? lerp(.12, 1, p) : 0;
+    c.style.color = p >= 1 ? '' : `rgba(255,255,255,${lerp(.25,1,p)})`;
+    c.style.textShadow = p >= 1 ? '' : 'none';
+    c.style.transform = `translateY(${(1-eout(p))*10}px)`;
+  });
+}
+const hs = (el, p) => el.style.setProperty('--hs', `${p*100}%`);
+
+// 120 BPM: beat 0.5s, bar 2s
+const SCENES = [['s1',0,3.5,'fig. 01 — engineering attention'],['s2',3.5,8,'fig. 02 — stop scrolling'],['s3',8,12,'fig. 03 — not just look good'],
+  ['s4',12,22,'fig. 04 — the four arms'],['s5',22,26,'maaef studios'],['s6',26,30,'fig. 05 — core values'],['s7',30,35.01,'fig. 06 — showing up with intent']];
+const kickOn = t => (t >= 0 && t < 22) || (t >= 26 && t < 33);
+const kickEnv = t => kickOn(t) ? Math.exp(-(t % .5)/.1) : 0;
+const W = .24;
+
+function render(t){
+  let fig = '', cur = '';
+  SCENES.forEach(([id,a,b,f], i) => {
+    const el = document.getElementById(id), on = t >= a && t < b;
+    el.style.visibility = on ? 'visible' : 'hidden';
+    if (!on) return;
+    fig = f; cur = id;
+    const u = t - a, d = b - a;
+    const pin = i > 0 ? 1 - eout(prog(u, 0, W)) : 0, pout = i < SCENES.length-1 ? eio(prog(u, d-W, d)) : 0;
+    el.style.transform = `translateX(${pin*420 - pout*420}px) scale(${1 + .006*kickEnv(t)})`;
+    el.style.filter = (pin + pout) > .01 ? `blur(${(pin+pout)*16}px)` : 'none';
+    SC[id](u, t);
+  });
+  $('#bg').style.transform = `translate(${(-t*22) % 80}px,${(-t*9) % 80}px)`;
+  $('#floorWrap').style.opacity = (t >= 12 && t < 22) || (t >= 26 && t < 30) ? 1 : 0;
+  $('#floor').style.backgroundPosition = `0 ${t*160}px`;
+  $('#vig').style.opacity = cur === 's5' ? 0 : (cur === 's7' ? .5 : 1);
+  $('#hud').classList.toggle('dark', cur === 's5');
+  $('#fig').textContent = fig;
+  $('#tc').textContent = `00:00:${String(Math.floor(t)).padStart(2,'0')}:${String(Math.floor((t%1)*30)).padStart(2,'0')}`;
+  $('#playhead').style.left = `${(t/35)*100}%`;
+  $('#hud').style.opacity = eout(prog(t,0,.4));
+}
+
+const SC = {
+  s1(u){
+    $('#s1 .cam').style.transform = `perspective(1800px) rotateX(${lerp(12,3,eout(prog(u,0,3.5)))}deg) rotateY(${lerp(-10,2,eio(prog(u,0,3.5)))}deg) translateZ(${lerp(-200,40,eout(prog(u,0,3.5)))}px)`;
+    const sp = prog(u, 0, .5);
+    $('#bigstar').style.transform = `rotate(${lerp(-200,0,eout5(sp)) + u*12}deg) scale(${lerp(.2,1,back(sp))})`;
+    $('#bigstar').style.opacity = sp > 0 ? 1 : 0;
+    $('#s1lbl').style.opacity = eout(prog(u,.3,.6));
+    const h = $$('#s1 h1 [data-sweep]');
+    sweep(h[0], u, .5, .45); sweep(h[1], u, 1.0, .4);
+    hs($('#att'), eio(prog(u, 1.5, 1.8)));
+  },
+  s2(u){
+    // feed scrolls fast, then hard-stops on the beat (5.5s)
+    const stop = 2.0;
+    const v0 = 2600, y = u < stop ? v0*u - .5*(v0/stop)*u*u*0 : 0;
+    const dec = u < stop ? (1 - Math.pow(1 - u/stop, 3)) : 1;
+    const pos = 2400 * dec;
+    $('#col').style.transform = `translateY(${-pos - 40}px)`;
+    $('.feed').style.filter = u < stop - .3 ? `blur(${3*(1 - u/stop)}px)` : 'none';
+    const fp = prog(u, stop, stop + .2);
+    $('#frame').style.opacity = fp > 0 ? 1 : 0;
+    $('#frame').style.transform = `scale(${lerp(1.12,1,back(fp))})`;
+    $('#s2 .cam').style.transform = `perspective(1800px) rotateY(${lerp(8,-4,eio(prog(u,0,4.5)))}deg)`;
+    const s = $$('#s2 [data-sweep]');
+    sweep(s[0], u, .25, .35); sweep(s[1], u, .65, .45);
+    sweep(s[2], u, 2.0, .35); sweep(s[3], u, 2.4, .45);
+    hs($('#pay'), eio(prog(u, 2.9, 3.2)));
+  },
+  s3(u){
+    $('#s3 .cam').style.transform = `perspective(1800px) rotateY(${lerp(-6,4,eio(prog(u,0,4)))}deg) translateZ(${lerp(-60,40,prog(u,0,4))}px)`;
+    const s = $$('#s3 [data-sweep]');
+    sweep(s[0], u, .25, .3); sweep(s[1], u, .6, .4);
+    const lg = $('#lookgood'), st = $('#strike');
+    st.style.left = `${180 + lg.offsetLeft - 10}px`; st.style.top = `${300 + 48}px`; st.style.width = `${lg.offsetWidth - 50}px`;
+    st.style.transform = `scaleX(${eout5(prog(u, 1.5, 1.68))}) rotate(-3deg)`;
+    const w = $('#work'), wp = prog(u, 2.0, 2.22);
+    w.style.opacity = wp > 0 ? 1 : 0;
+    w.style.transform = `scale(${lerp(1.6,1,eout5(wp)) + .03*kickEnv(u+8)})`; w.style.transformOrigin = '0 50%';
+    hs(w.querySelector('.hl'), eout(prog(u, 2.0, 2.25)));
+  },
+  s4(u){
+    const k = Math.min(3, Math.floor(u/2.5)), lu = u - k*2.5;
+    const pan = k + (k < 3 ? eio(prog(lu, 2.25, 2.5)) : 0);
+    $('#world').style.transform = `translateX(${-(NX(0) + 410 - 960) - pan*STEP}px)`;
+    $('#s4 .cam').style.transform = `perspective(1800px) rotateY(${lerp(6,-6,(u%2.5)/2.5)}deg) rotateX(4deg)`;
+    $('#s4 .cam').style.filter = (lu > 2.25 && k < 3) ? `blur(${Math.sin(prog(lu,2.25,2.5)*Math.PI)*6}px)` : 'none';
+    ARMS.forEach((_,j) => {
+      const nu = u - j*2.5, node = $(`#node${j}`), act = nu >= 0 && nu < 2.6;
+      node.style.borderColor = act ? '#fff' : 'rgba(255,255,255,.4)';
+      node.style.boxShadow = act ? '0 0 50px rgba(122,14,14,.9), inset 0 0 40px rgba(122,14,14,.45)' : 'none';
+      sweep(node.querySelector('[data-sweep]'), nu, .05, .3);
+      node.querySelector('.s').style.opacity = eout(prog(nu,.35,.6));
+      node.querySelector('.p').style.opacity = eout(prog(nu,.55,.85));
+      for (let s = 0; s < 4; s++) {
+        const a = .75 + s*.25, p = prog(nu, a, a+.25), tg = $(`#tg${j}_${s}`);
+        tg.style.opacity = eout(clamp(p*2)); tg.style.transform = `scale(${lerp(.8,1,back(p))})`;
+      }
+      if (j < 3) {
+        const dp = eio(prog(u, j*2.5 + 1.9, j*2.5 + 2.5)), dot = $(`#dot${j}`);
+        dot.style.left = `${NX(j) + 820 + dp*(STEP-820) - 8}px`; dot.style.opacity = dp > 0 && dp < 1 ? 1 : 0;
+      }
+    });
+  },
+  s5(u){
+    $('#s5 .cam').style.transform = `perspective(2000px) rotateX(${lerp(6,2,eout(prog(u,0,4)))}deg) rotateZ(${lerp(-1.5,-.5,prog(u,0,4))}deg)`;
+    // 10 -> 10,000 counter, stepping up on 16ths
+    const p = prog(u, .8, 2.2), steps = Math.floor(p*12);
+    const n = p >= 1 ? 10000 : Math.round(10 * Math.pow(1000, steps/12));
+    $('#num').innerHTML = `${n.toLocaleString('en-US')}<small>copies</small>`;
+    $('#num').style.transform = `scale(${1 + .04*Math.sin(prog(u,2.2,2.45)*Math.PI)})`; $('#num').style.transformOrigin = '0 70%';
+    $('#s5line').style.opacity = eout(prog(u,.3,.6));
+    const sp = prog(u, 2.5, 2.7);
+    $('#stamp').style.opacity = sp > 0 ? 1 : 0;
+    $('#stamp').style.transform = `rotate(${lerp(-6,-2,eout(sp))}deg) scale(${lerp(1.5,1,eout5(sp))})`;
+    $('#s5star').style.transform = `rotate(${u*40}deg)`;
+    $('#s5star').style.opacity = eout(prog(u,.1,.5));
+  },
+  s6(u){
+    $('#s6 .cam').style.transform = `perspective(1800px) rotateX(${lerp(14,6,eout(prog(u,0,4)))}deg)`;
+    $('#s6k').style.opacity = eout(prog(u,.1,.4));
+    $$('#s6 .v').forEach((v,i) => {
+      const a = .5 + i*.5, p = prog(u, a, a+.3);
+      v.style.opacity = p > 0 ? 1 : 0; v.style.transform = `translateX(${(1-eout5(p))*-80}px)`;
+      sweep(v.querySelector('[data-sweep]'), u, a, .25);
+      const st = v.querySelector('.star'); st.style.transform = `rotate(${(1-eout(p))*-180 + u*30}deg)`;
+    });
+  },
+  s7(u){
+    $('#s7 .cam').style.transform = `perspective(1800px) rotateY(${lerp(-5,0,eout(prog(u,0,3)))}deg)`;
+    sweep($('#q1 [data-sweep]'), u, .25, .6); sweep($('#q2 [data-sweep]'), u, 1.2, .5);
+    // logo: as supplied, no effects; slides in on the beat
+    const lp = eout5(prog(u, 2.5, 2.9));
+    $('#logo').style.opacity = lp; $('#logo').style.transform = `translateX(${(1-lp)*-120}px)`;
+    $('#tagl').style.opacity = eout(prog(u, 2.9, 3.2));
+    $('#site').style.opacity = eout(prog(u, 3.2, 3.5));
+  }
+};
+window.render = render;
+window.ready = Promise.all([document.fonts.load('600 40px Panchang'), document.fonts.ready, ...[...document.images].map(i => i.decode())]);
+render(0);
+</script>
+</body>
+</html>
