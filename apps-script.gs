@@ -10,6 +10,13 @@ const SHEET_ID = '';
 const COLUMNS = ['submitted_at','name','phone','email','profile','current_living','pain',
   'room_type','meals','budget','housing_pref','move_in','source'];
 
+// Run this once from the editor (select "authorize" in the toolbar, then Run) to grant access
+// before deploying. It only reads the sheet's name.
+function authorize() {
+  const book = SHEET_ID ? SpreadsheetApp.openById(SHEET_ID) : SpreadsheetApp.getActiveSpreadsheet();
+  Logger.log('Connected to: ' + book.getName());
+}
+
 function doPost(e) {
   const data = JSON.parse(e.postData.contents);
   if (data.company) return ContentService.createTextOutput('ok'); // honeypot filled: bot, don't save
