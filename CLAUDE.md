@@ -10,7 +10,7 @@ A waitlist and validation site. Flow: intro animation → story "video" (animate
 - A single `index.html`: vanilla HTML/CSS/JS, no framework, no build step.
 - Google Fonts: Tinos (all serif), Onest (sans).
 - The pine photo lives in `assets/pine.jpg` (preloaded; the intro waits up to 2.5s for it to decode). The logo SVG path is inline.
-- `apps-script.gs` is a Google Apps Script web app that appends each submission to a Google Sheet. Its deployed URL is set in `CONFIG.endpoint` in `index.html`; redeploy changes as a new version of the same deployment so the URL stays put. The form POSTs with `no-cors`, so the page can't read the response.
+- `apps-script.gs` is a Google Apps Script web app that appends each submission to a Google Sheet. The target sheet is set by `SHEET_ID` in the script (empty = the sheet the script is bound to); to switch sheets, change the ID and redeploy. Its deployed URL is set in `CONFIG.endpoint` in `index.html`; redeploy changes as a new version of the same deployment so the URL stays put. The form POSTs with `no-cors`, so the page can't read the response.
 - Spam: a hidden honeypot field (`#company`). If it's filled, the page shows success but sends nothing, and the Apps Script also drops the row.
 - Analytics: Vercel Web Analytics via `/_vercel/insights/script.js` in `<head>` (must be enabled in the Vercel project; 404s locally).
 - Hosting: Vercel, static, no build. `vercel.json` sets clean URLs and caches `/assets/*` for 30 days, so rename an asset when you replace it.
