@@ -6,7 +6,7 @@
 // 3. Deploy → Manage deployments → Edit → Version: New version → Deploy.
 //    Editing the existing deployment keeps the web app URL, so CONFIG.endpoint in the site stays the same.
 //    Apps Script will ask you to re-authorise once, because it now opens a sheet by ID.
-const SHEET_ID = '';
+const SHEET_ID = '1tVbUe2JJuMH_z41tN9fxZEE328GvgWq14yGpA7Ak7-s'; // LVII Waitlist Leads (Maaef Media House account)
 const COLUMNS = ['submitted_at','name','phone','email','profile','current_living','pain',
   'room_type','meals','budget','housing_pref','move_in','source'];
 
